@@ -1,0 +1,2593 @@
+{
+  "info": {
+    "_postman_id": "59cc0040-ec35-4fdf-aab0-e5939c6f3ebb",
+    "name": "Barberpedia API",
+    "description": "Complete API collection for Barberpedia service with automated variable extraction",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "485855",
+    "_collection_link": "https://go.postman.co/collection/485855-59cc0040-ec35-4fdf-aab0-e5939c6f3ebb?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "1. Onboarding",
+      "item": [
+        {
+          "name": "Get Welcome Message",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has correct structure\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('code');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/onboarding",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "onboarding"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has correct structure\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('code');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});",
+                  "",
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.token) {",
+                  "        pm.environment.set(\"auth_token\", jsonData.data.token);",
+                  "        pm.collectionVariables.set(\"auth_token\", jsonData.data.token);",
+                  "        console.log(\"Token saved: \" + jsonData.data.token);",
+                  "    }",
+                  "    if (jsonData.data && jsonData.data.user && jsonData.data.user.id) {",
+                  "        pm.environment.set(\"user_id\", jsonData.data.user.id);",
+                  "        pm.collectionVariables.set(\"user_id\", jsonData.data.user.id);",
+                  "        console.log(\"User ID saved: \" + jsonData.data.user.id);",
+                  "    }",
+                  "    if (jsonData.data && jsonData.data.user && jsonData.data.user.email) {",
+                  "        pm.environment.set(\"user_email\", jsonData.data.user.email);",
+                  "        pm.collectionVariables.set(\"user_email\", jsonData.data.user.email);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"hendar@mail.com\",\n  \"phone\": \"+6284234567890\",\n  \"password\": \"password123\",\n  \"name\": \"Hendar\",\n  \"dob\": \"2006-11-11\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has correct structure\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('code');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.session_token) {",
+                  "        pm.environment.set(\"auth_token\", jsonData.data.session_token);",
+                  "        pm.collectionVariables.set(\"auth_token\", jsonData.data.session_token);",
+                  "        console.log(\"Token saved: \" + jsonData.data.session_token);",
+                  "    }",
+                  "    if (jsonData.data && jsonData.data.user && jsonData.data.user.id) {",
+                  "        pm.environment.set(\"user_id\", jsonData.data.user.id);",
+                  "        pm.collectionVariables.set(\"user_id\", jsonData.data.user.id);",
+                  "        console.log(\"User ID saved: \" + jsonData.data.user.id);",
+                  "    }",
+                  "    if (jsonData.data && jsonData.data.user && jsonData.data.user.email) {",
+                  "        pm.environment.set(\"user_email\", jsonData.data.user.email);",
+                  "        pm.collectionVariables.set(\"user_email\", jsonData.data.user.email);",
+                  "    }",
+                  "",
+                  "    if (jsonData.data && jsonData.data.refresh_token) {",
+                  "        pm.environment.set(\"refresh_token\", jsonData.data.refresh_token);",
+                  "        pm.collectionVariables.set(\"refresh_token\", jsonData.data.refresh_token)",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"identifier\": \"capstertest@mail.com\",\n    \"password\": \"Capster.Capster.123!\",\n    \"device_info\": {\n        \"OS\": \"web\",\n        \"Model\": \"chrome\",\n        \"Version\": \"114.0.0.0\"\n    }\n}\n\n// {\n//   \"email\": \"user@example.com\",\n//   \"password\": \"password123\",\n//   \"fcm_token\": \"dFWclZ3TSLSdf8DULMsSxt:APA91bFDDnkPoB_nhLKoUXgI415l7Ah74YX6yWvhY62rgqFPeq8P9CoCa9zEZXJsXGz6O8RsUAYNFr4En21pRuro-1CAAkHHd0oJ36u5pZjsn_ZgLi4v5tg\",\n//   \"device_info\": {\n//     \"os\": \"Android\",\n//     \"model\": \"Samsung Galaxy S21\",\n//     \"version\": \"13\"\n//   }\n// }\n// {\n//     \"email\": \"user@example.com\",\n//     \"password\": \"password123\",\n//     \"device_info\": {\n//         \"OS\": \"web\",\n//         \"Model\": \"chrome\",\n//         \"Version\": \"114.0.0.0\"\n//     }\n// }"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZjBkYjhiZWEtNmI0Yi00YWYxLThkYmUtZGEwZjcyNTMwNjdlIiwiZW1haWwiOiIiLCJleHAiOjE3NjQzNTE3MjMsImlhdCI6MTc2Mzc0NjkyM30.RdLUHrVy_5juswho4831E9eOgLp7qNiTdbjdIOsixNs\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/logout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has correct structure\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('code');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.session_token) {",
+                  "        pm.environment.set(\"auth_token\", jsonData.data.session_token);",
+                  "        pm.collectionVariables.set(\"auth_token\", jsonData.data.session_token);",
+                  "        console.log(\"Token saved: \" + jsonData.data.session_token);",
+                  "    }",
+                  "    if (jsonData.data && jsonData.data.user && jsonData.data.user.id) {",
+                  "        pm.environment.set(\"user_id\", jsonData.data.user.id);",
+                  "        pm.collectionVariables.set(\"user_id\", jsonData.data.user.id);",
+                  "        console.log(\"User ID saved: \" + jsonData.data.user.id);",
+                  "    }",
+                  "    if (jsonData.data && jsonData.data.user && jsonData.data.user.email) {",
+                  "        pm.environment.set(\"user_email\", jsonData.data.user.email);",
+                  "        pm.collectionVariables.set(\"user_email\", jsonData.data.user.email);",
+                  "    }",
+                  "",
+                  "    if (jsonData.data && jsonData.data.refresh_token) {",
+                  "        pm.environment.set(\"refresh_token\", jsonData.data.refresh_token);",
+                  "        pm.collectionVariables.set(\"refresh_token\", jsonData.data.refresh_token)",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"refresh_token\": \"{{refresh_token}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/refresh",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "refresh"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/auth/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "3. Services",
+      "item": [
+        {
+          "name": "List All Services",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has correct structure\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('code');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data && Array.isArray(jsonData.data) && jsonData.data.length > 0) {",
+                  "        var firstService = jsonData.data[0];",
+                  "        if (firstService.id) {",
+                  "            pm.environment.set(\"service_id\", firstService.id);",
+                  "            pm.collectionVariables.set(\"service_id\", firstService.id);",
+                  "            console.log(\"Service ID saved: \" + firstService.id);",
+                  "        }",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/services",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "services"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Service by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has correct structure\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('code');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/services/{{service_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "services",
+                "{{service_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Capsters",
+      "item": [
+        {
+          "name": "List All Capsters",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has correct structure\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('code');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data && Array.isArray(jsonData.data) && jsonData.data.length > 0) {",
+                  "        var firstCapster = jsonData.data[0];",
+                  "        if (firstCapster.id) {",
+                  "            pm.environment.set(\"capster_id\", firstCapster.id);",
+                  "            pm.collectionVariables.set(\"capster_id\", firstCapster.id);",
+                  "            console.log(\"Capster ID saved: \" + firstCapster.id);",
+                  "        }",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/capsters?kursor=656d82e6-684f-4e07-9840-36021544574d",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "capsters"
+              ],
+              "query": [
+                {
+                  "key": "kursor",
+                  "value": "656d82e6-684f-4e07-9840-36021544574d",
+                  "type": "text"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Capster with Reviews",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has correct structure\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('code');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/capsters/{{capster_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "capsters",
+                "{{capster_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "5. Bookings",
+      "item": [
+        {
+          "name": "Create Booking",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has correct structure\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('code');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});",
+                  "",
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.id) {",
+                  "        pm.environment.set(\"booking_id\", jsonData.data.id);",
+                  "        pm.collectionVariables.set(\"booking_id\", jsonData.data.id);",
+                  "        console.log(\"Booking ID saved: \" + jsonData.data.id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"service_id\": \"{{service_id}}\",\n  \"capster_id\": \"{{capster_id}}\",\n  \"scheduled_at\": \"2025-12-15T14:00:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/bookings",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "bookings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Bookings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has correct structure\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('code');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/bookings",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "bookings"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "6. Points",
+      "item": [
+        {
+          "name": "Get Points Summary",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has correct structure\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('code');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/points",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "points"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "7. Reviews",
+      "item": [
+        {
+          "name": "Create Review",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has correct structure\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('code');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});",
+                  "",
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.id) {",
+                  "        pm.environment.set(\"review_id\", jsonData.data.id);",
+                  "        pm.collectionVariables.set(\"review_id\", jsonData.data.id);",
+                  "        console.log(\"Review ID saved: \" + jsonData.data.id);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"capster_id\": \"{{capster_id}}\",\n  \"rating\": 5,\n  \"comment\": \"Excellent service!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reviews",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reviews"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "8. Vouchers",
+      "item": [
+        {
+          "name": "List Active Vouchers",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has correct structure\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('code');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data && Array.isArray(jsonData.data) && jsonData.data.length > 0) {",
+                  "        var firstVoucher = jsonData.data[0];",
+                  "        if (firstVoucher.code) {",
+                  "            pm.environment.set(\"voucher_code\", firstVoucher.code);",
+                  "            pm.collectionVariables.set(\"voucher_code\", firstVoucher.code);",
+                  "            console.log(\"Voucher code saved: \" + firstVoucher.code);",
+                  "        }",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/vouchers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "vouchers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Redeem Voucher",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 or 201\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has correct structure\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('code');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"{{voucher_code}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/vouchers/redeem",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "vouchers",
+                "redeem"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "9. Photos",
+      "item": [
+        {
+          "name": "Step 1 - Upload Photo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has correct structure\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('code');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});",
+                  "",
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.id) {",
+                  "        pm.environment.set(\"photo_id\", jsonData.data.id);",
+                  "        pm.collectionVariables.set(\"photo_id\", jsonData.data.id);",
+                  "        console.log(\"Photo ID saved: \" + jsonData.data.id);",
+                  "    }",
+                  "    if (jsonData.data && jsonData.data.url) {",
+                  "        pm.environment.set(\"photo_url\", jsonData.data.url);",
+                  "        pm.collectionVariables.set(\"photo_url\", jsonData.data.url);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "photo",
+                  "type": "file",
+                  "description": "Foto Customer",
+                  "src": "/C:/Users/apoca/Downloads/image.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/photos",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "photos"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{auth_token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "photo",
+                      "type": "file",
+                      "src": "/C:/Users/apoca/Downloads/unnamed.jpg"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/photos",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "photos"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Date",
+                  "value": "Mon, 01 Dec 2025 15:54:03 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "225"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                },
+                {
+                  "key": "Server",
+                  "value": "cloudflare"
+                },
+                {
+                  "key": "vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "access-control-allow-origin",
+                  "value": "*"
+                },
+                {
+                  "key": "cf-cache-status",
+                  "value": "DYNAMIC"
+                },
+                {
+                  "key": "Nel",
+                  "value": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}"
+                },
+                {
+                  "key": "Report-To",
+                  "value": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=gijK7fNaz7dewTnu8aTTOnE0%2BRkI6WVVQnFYy4MjpCNznyHdBg8wQSULvYkoiMhcgXuLCPJU5K%2BYI51ZEa0M4FpVeDDD%2FmdfJ7rOjXXHBQ%3D%3D\"}]}"
+                },
+                {
+                  "key": "CF-RAY",
+                  "value": "9a73c2cc0846fe03-SIN"
+                },
+                {
+                  "key": "alt-svc",
+                  "value": "h3=\":443\"; ma=86400"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 201,\n    \"message\": \"Photo uploaded successfully\",\n    \"data\": {\n        \"id\": \"e38b151c-00d0-4824-b388-fd72ea1a5791\",\n        \"url\": \"/uploads/0d33855e-eac9-48c9-82eb-7c9965899c28_1764604443.jpg\",\n        \"created_at\": \"2025-12-01T22:54:03.574972879+07:00\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Step 2 - Analyze",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"photo_id\": \"63b4c50a-5097-4667-9c09-4f394fae16be\",  // id dari upload fotom\r\n    \"service_id\": \"\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/analyze-photo",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "analyze-photo"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"photo_id\": \"dbb5cc5f-b24f-4361-a6ae-6d291f22ac59\"  // id dari upload fotom\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/analyze-photo",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "analyze-photo"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Server",
+                  "value": "Fiber"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 01 Dec 2025 18:51:36 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1939"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 200,\n    \"message\": \"Photo analyzed successfully\",\n    \"data\": {\n        \"face_shape\": \"Oval/Lonjong\",\n        \"face_analysis_result\": \"Wajah memiliki proporsi yang relatif seimbang, namun sedikit lebih panjang dari lebarnya, menempatkannya di antara oval dan lonjong. Dahi dan rahang memiliki lebar yang seimbang. Bentuk wajah ini sangat serbaguna untuk berbagai gaya rambut.\",\n        \"hair_analysis_result\": {\n            \"hair_line\": \"Lurus ke C-Shape (slight M-shape) di pelipis. Garis rambut depan cukup padat.\",\n            \"hair_type\": {\n                \"code\": \"1C/2A\",\n                \"type\": \"Lurus tebal cenderung sedikit bergelombang (Thick Straight to Slightly Wavy)\"\n            }\n        },\n        \"recommendation\": [\n            {\n                \"haircut_name\": \"Modern Pompadour/Quiff dengan Low Fade\",\n                \"analysis\": \"Potongan ini bekerja sempurna untuk wajah oval karena menciptakan volume ke atas, memberikan ilusi wajah yang lebih pendek. Fade di samping menjaga tampilan tetap rapi dan modern.\",\n                \"styling\": \"Gunakan pomade atau clay dengan daya tahan tinggi untuk mempertahankan volume dan tekstur di bagian atas. Sisir ke atas dan sedikit ke belakang.\",\n                \"rating\": \"9/10\"\n            },\n            {\n                \"haircut_name\": \"Textured Crop (French Crop)\",\n                \"analysis\": \"Potongan ini sangat rendah perawatan dan memanfaatkan tekstur rambut alami. Poni pendek yang jatuh ke dahi dapat menyamarkan garis rambut dan memberikan kesan wajah lebih maskulin dan terstruktur.\",\n                \"styling\": \"Sedikit wax atau sea salt spray untuk menonjolkan tekstur. Styling cukup dengan jari.\",\n                \"rating\": \"8.5/10\"\n            },\n            {\n                \"haircut_name\": \"Classic Taper dengan Side Parting\",\n                \"analysis\": \"Potongan klasik yang selalu cocok dengan wajah oval. Panjang yang bergradasi (taper) di samping dan belakang memberikan kesan profesional namun tetap segar. Belahan samping menambah dimensi horizontal.\",\n                \"styling\": \"Gunakan produk berbasis krim atau pomade shine rendah. Sisir rapi sesuai belahan.\",\n                \"rating\": \"8/10\"\n            }\n        ],\n        \"extra\": \"Pria ini memiliki kumis dan janggut tipis yang menambah definisi pada rahang bawah. Potongan rambut harus selaras dengan gaya facial hair yang ada.\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Step 3 - Generate Haircut Recommendation Image",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer $(cat TOKEN)"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"photo_id\": \"9138c918-9dc8-4b4e-a519-2cfcb176a72e\", //id dari upload foto\r\n   \"recommendation\": [\r\n            {\r\n                \"haircut_name\": \"Modern Quiff\",\r\n                \"analysis\": \"Potongan ini memberikan volume di bagian atas yang sangat cocok untuk menonjolkan struktur wajah oval Anda. Sisi samping yang lebih pendek akan membuat wajah terlihat lebih tegas.\",\r\n                \"styling\": \"Gunakan hair dryer dan sisir bulat untuk mengangkat bagian depan, lalu kunci dengan wax atau pomade bertipe matte.\",\r\n                \"rating\": \"9.5/10\"\r\n            },\r\n            {\r\n                \"haircut_name\": \"Textured French Crop\",\r\n                \"analysis\": \"Potongan ini sangat efisien untuk jenis rambut Anda yang tebal. Tekstur di bagian atas memberikan kesan modern tanpa perlu banyak perawatan.\",\r\n                \"styling\": \"Cukup gunakan sedikit hair powder untuk memberikan volume dan tekstur yang terlihat alami dan sedikit berantakan.\",\r\n                \"rating\": \"8.5/10\"\r\n            },\r\n            {\r\n                \"haircut_name\": \"Classic Side Part with Taper Fade\",\r\n                \"analysis\": \"Gaya rambut belah pinggir yang klasik memberikan kesan rapi dan profesional, sangat sesuai dengan garis rambut Anda yang lurus.\",\r\n                \"styling\": \"Gunakan pomade berbahan dasar air (water-based) untuk hasil yang klimis dan gunakan sisir untuk merapikan belahan rambut.\",\r\n                \"rating\": \"9/10\"\r\n            }\r\n        ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/generate-image/by-name",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "generate-image",
+                "by-name"
+              ]
+            },
+            "description": "Generated from cURL: curl -X POST http://localhost:3000/api/v1/generate-image/by-name \\\r\n  -H \"Authorization: Bearer $(cat TOKEN)\" \\\r\n  -H \"Content-Type: application/json\" \\\r\n  -d \"{\\\"photo_id\\\":\\\"$(cat PHOTO_ID)\\\",\\\"haircut_name\\\":\\\"undercut\\\"}\""
+          },
+          "response": [
+            {
+              "name": "Step 3 - Generate Haircut Recommendation Image",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer $(cat TOKEN)"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n   \"photo_id\": \"d75e819a-a88d-40c4-97cf-9d0558f823b5\", //id dari upload foto\r\n   \"recommendation\": [\r\n            {\r\n                \"haircut_name\": \"Textured Quiff dengan Taper Fade\",\r\n                \"analysis\": \"Potongan ini sangat cocok untuk rambut tebal karena dapat memberikan tekstur yang jelas tanpa terlihat terlalu kaku. Quiff menambahkan sedikit tinggi yang bekerja baik dengan wajah oval. Taper fade di samping memberikan penampilan yang rapi dan modern.\",\r\n                \"styling\": \"Menggunakan produk matte pomade atau clay untuk menambah tekstur dan menahan volume. Rambut disisir ke atas dan sedikit ke belakang.\",\r\n                \"rating\": \"9/10\"\r\n            },\r\n            {\r\n                \"haircut_name\": \"Modern Side Part (Classic Fade)\",\r\n                \"analysis\": \"Potongan rambut belahan samping klasik yang timeless dan profesional. Sisi yang dipotong pendek (fade) menjaga kerapian, sementara bagian atas disisir rapi, menonjolkan bentuk wajah oval yang proporsional.\",\r\n                \"styling\": \"Gunakan sisir untuk menciptakan belahan yang tegas. Aplikasikan pomade berbasis minyak atau air untuk tampilan klimis dan berkilau (sleek look) atau krim untuk tampilan yang lebih alami.\",\r\n                \"rating\": \"8.5/10\"\r\n            },\r\n            {\r\n                \"haircut_name\": \"French Crop Pendek\",\r\n                \"analysis\": \"Potongan ini cocok untuk rambut tebal karena memanfaatkan kepadatan rambut untuk membentuk poni yang bertekstur. Ini adalah pilihan yang mudah dirawat dan dapat sedikit menyamarkan tinggi dahi (jika diinginkan).\",\r\n                \"styling\": \"Sangat minim styling. Cukup gunakan sedikit clay untuk memberikan tekstur pada bagian atas dan poni.\",\r\n                \"rating\": \"8/10\"\r\n            }\r\n        ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/generate-image/by-name",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "generate-image",
+                    "by-name"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Server",
+                  "value": "Fiber"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 07 Dec 2025 08:15:29 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "141"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 200,\n    \"message\": \"Generated image created successfully\",\n    \"data\": {\n        \"request_id\": \"683ed1af-635e-43c0-8a93-6486080ff4e1\",\n        \"status\": \"running\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Step 4 - Get List Generated",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer $(cat TOKEN)"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"photo_id\": \"c498a869-3c8e-4e7e-a9ac-f509d819e5fd\", //id dari upload foto\r\n   \"recommendation\": [\r\n            {\r\n                \"haircut_name\": \"Modern Quiff dengan Fade\",\r\n                \"analysis\": \"Potongan rambut ini akan menambah volume di bagian atas, yang membantu menyeimbangkan proporsi wajah yang lonjong. Fade di sisi samping akan memberikan tampilan yang bersih dan modern, serta menonjolkan struktur tulang pipi.\",\r\n                \"styling\": \"Gunakan pomade atau wax dengan daya tahan medium hingga kuat. Keringkan rambut ke arah atas dan belakang, lalu bentuk jambul di bagian depan.\",\r\n                \"rating\": \"9/10\"\r\n            },\r\n            {\r\n                \"haircut_name\": \"Side Part (Belah Samping) dengan Volume\",\r\n                \"analysis\": \"Gaya klasik ini sangat cocok untuk wajah lonjong. Belahan samping menciptakan ilusi lebar pada wajah, sementara volume di bagian atas mencegah wajah terlihat terlalu panjang.\",\r\n                \"styling\": \"Gunakan sisir untuk membuat belahan samping yang rapi. Aplikasikan clay atau pomade matte pada rambut yang sedikit lembap untuk memberikan tekstur dan volume tanpa kilap berlebih.\",\r\n                \"rating\": \"8.5/10\"\r\n            },\r\n            {\r\n                \"haircut_name\": \"Textured Crop / French Crop\",\r\n                \"analysis\": \"Potongan ini memiliki poni pendek di bagian depan yang dapat membantu menutupi dahi yang tinggi, sehingga membuat wajah terlihat lebih proporsional. Tekstur pada rambut akan menambah dimensi.\",\r\n                \"styling\": \"Gunakan sedikit styling powder atau matte paste untuk memberikan tekstur acak pada rambut. Sisir poni ke depan atau sedikit menyamping.\",\r\n                \"rating\": \"8/10\"\r\n            }\r\n        ]\r\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/photos/:user_id/:request_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "photos",
+                ":user_id",
+                ":request_id"
+              ],
+              "variable": [
+                {
+                  "key": "user_id",
+                  "value": "f0db8bea-6b4b-4af1-8dbe-da0f7253067e"
+                },
+                {
+                  "key": "request_id",
+                  "value": "b5b5e2cf-16f1-4320-a0db-73a522901f63"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer $(cat TOKEN)"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"photo_id\": \"c498a869-3c8e-4e7e-a9ac-f509d819e5fd\", //id dari upload foto\r\n   \"recommendation\": [\r\n            {\r\n                \"haircut_name\": \"Modern Quiff dengan Fade\",\r\n                \"analysis\": \"Potongan rambut ini akan menambah volume di bagian atas, yang membantu menyeimbangkan proporsi wajah yang lonjong. Fade di sisi samping akan memberikan tampilan yang bersih dan modern, serta menonjolkan struktur tulang pipi.\",\r\n                \"styling\": \"Gunakan pomade atau wax dengan daya tahan medium hingga kuat. Keringkan rambut ke arah atas dan belakang, lalu bentuk jambul di bagian depan.\",\r\n                \"rating\": \"9/10\"\r\n            },\r\n            {\r\n                \"haircut_name\": \"Side Part (Belah Samping) dengan Volume\",\r\n                \"analysis\": \"Gaya klasik ini sangat cocok untuk wajah lonjong. Belahan samping menciptakan ilusi lebar pada wajah, sementara volume di bagian atas mencegah wajah terlihat terlalu panjang.\",\r\n                \"styling\": \"Gunakan sisir untuk membuat belahan samping yang rapi. Aplikasikan clay atau pomade matte pada rambut yang sedikit lembap untuk memberikan tekstur dan volume tanpa kilap berlebih.\",\r\n                \"rating\": \"8.5/10\"\r\n            },\r\n            {\r\n                \"haircut_name\": \"Textured Crop / French Crop\",\r\n                \"analysis\": \"Potongan ini memiliki poni pendek di bagian depan yang dapat membantu menutupi dahi yang tinggi, sehingga membuat wajah terlihat lebih proporsional. Tekstur pada rambut akan menambah dimensi.\",\r\n                \"styling\": \"Gunakan sedikit styling powder atau matte paste untuk memberikan tekstur acak pada rambut. Sisir poni ke depan atau sedikit menyamping.\",\r\n                \"rating\": \"8/10\"\r\n            }\r\n        ]\r\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/photos/:user_id/:request_id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "photos",
+                    ":user_id",
+                    ":request_id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "user_id",
+                      "value": "f0db8bea-6b4b-4af1-8dbe-da0f7253067e"
+                    },
+                    {
+                      "key": "request_id",
+                      "value": "584adfc3-ff68-4586-9959-57b073ea6434"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Server",
+                  "value": "Fiber"
+                },
+                {
+                  "key": "Date",
+                  "value": "Wed, 17 Dec 2025 15:22:01 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "734"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 200,\n    \"message\": \"Generated photo retrieved successfully\",\n    \"data\": [\n        {\n            \"id\": \"584adfc3-ff68-4586-9959-57b073ea6434\",\n            \"url\": \"//f0db8bea-6b4b-4af1-8dbe-da0f7253067e/generated/The_Modern_Quiff_Quiff_Kontemporer__1765984891_generated\",\n            \"created_at\": \"2025-12-17T22:22:01.902122+07:00\"\n        },\n        {\n            \"id\": \"584adfc3-ff68-4586-9959-57b073ea6434\",\n            \"url\": \"//f0db8bea-6b4b-4af1-8dbe-da0f7253067e/generated/Tapered_Side_Part_Belah_Samping_Rapi__1765984891_generated\",\n            \"created_at\": \"2025-12-17T22:22:01.902122+07:00\"\n        },\n        {\n            \"id\": \"584adfc3-ff68-4586-9959-57b073ea6434\",\n            \"url\": \"//f0db8bea-6b4b-4af1-8dbe-da0f7253067e/generated/Textured_Crop_with_Mid_Fade_Potongan_Tekstur_Pendek_dengan_Fade_Sedang__1765984891_generated\",\n            \"created_at\": \"2025-12-17T22:22:01.902122+07:00\"\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Step 5 - Get Image by URL",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{base_url}}/photos/f0db8bea-6b4b-4af1-8dbe-da0f7253067e/generated/The_Modern_Quiff_Quiff_Kontemporer__1765984891_generated",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "photos",
+                "f0db8bea-6b4b-4af1-8dbe-da0f7253067e",
+                "generated",
+                "The_Modern_Quiff_Quiff_Kontemporer__1765984891_generated"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Image For Add on",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer $ACCESS_TOKEN"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"photo_id\": \"e7c66ae5-ee51-4c7b-80aa-643ccbb5313d\", //UUID foto yang sudah di generate dan dipilih oleh user\n    \"add_on\": {\n        \"hair_tattoo\": {\n            \"tattoo_name\": \"light lightning bolt on side\"\n        },\n        \"perming\": {\n            \"level\": \"medium\"\n        },\n        \"coloring\": {\n            \"color_hex\": \"#FF5733\",\n            \"type\": \"Peekaboo\"\n        },\n        \"smoothing\": {\n            \"type_smoothing\": \"keratin\"\n        }\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/generate-image/add-on",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "generate-image",
+                "add-on"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer $ACCESS_TOKEN"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"photo_id\": \"3ded0c19-3bab-4daa-a732-6a9eb79a50ea\", //UUID foto yang sudah di generate\n    \"add_on\": {\n        \"hair_tattoo\": {\n            \"tattoo_name\": \"light lightning bolt on side\"\n        },\n        \"perming\": {\n            \"level\": \"medium\"\n        },\n        \"coloring\": {\n            \"color_hex\": \"#FF5733\"\n        },\n        \"smoothing\": {\n            \"type_smoothing\": \"keratin\"\n        }\n    }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/generate-image/add-on",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "generate-image",
+                    "add-on"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Server",
+                  "value": "Fiber"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 22 Dec 2025 16:50:09 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "264"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 200,\n    \"message\": \"Generated image with add-on created successfully\",\n    \"data\": {\n        \"id\": \"cc2079dd-c04b-4e78-a76c-5b82bbeea47c\",\n        \"url\": \"/f0db8bea-6b4b-4af1-8dbe-da0f7253067e/generated/addon_1766422186_generated.jpeg\",\n        \"created_at\": \"2025-12-22T23:49:46.33579536+07:00\"\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "10. Settings",
+      "item": [
+        {
+          "name": "Get User Settings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has correct structure\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('code');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/settings",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "settings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Settings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has correct structure\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('code');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "    pm.expect(jsonData).to.have.property('data');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notif_booking\": true,\n  \"notif_promo\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/settings",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "settings"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "11. Admin",
+      "item": [
+        {
+          "name": "Services",
+          "item": [
+            {
+              "name": "Create Service",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 201\", function () {",
+                      "    pm.response.to.have.status(201);",
+                      "});",
+                      "",
+                      "pm.test(\"Response has correct structure\", function () {",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.expect(jsonData).to.have.property('code');",
+                      "    pm.expect(jsonData).to.have.property('message');",
+                      "    pm.expect(jsonData).to.have.property('data');",
+                      "});",
+                      "",
+                      "if (pm.response.code === 201) {",
+                      "    var jsonData = pm.response.json();",
+                      "    if (jsonData.data && jsonData.data.id) {",
+                      "        pm.environment.set(\"admin_service_id\", jsonData.data.id);",
+                      "        pm.collectionVariables.set(\"admin_service_id\", jsonData.data.id);",
+                      "        console.log(\"Admin Service ID saved: \" + jsonData.data.id);",
+                      "    }",
+                      "}"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{auth_token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Premium Haircut\",\n  \"description\": \"Professional haircut with styling\",\n  \"price\": 150000,\n  \"duration_minutes\": 45,\n  \"is_recommended\": false,\n  \"is_allow_photo\": false\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/services",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "services"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Service",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Response has correct structure\", function () {",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.expect(jsonData).to.have.property('code');",
+                      "    pm.expect(jsonData).to.have.property('message');",
+                      "    pm.expect(jsonData).to.have.property('data');",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{auth_token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Premium Haircut Updated\",\n  \"description\": \"Updated professional haircut with styling\",\n  \"price\": 175000,\n  \"duration_minutes\": 50\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/services/{{admin_service_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "services",
+                    "{{admin_service_id}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Service",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200 or 204\", function () {",
+                      "    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{auth_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/services/{{admin_service_id}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "services",
+                    "{{admin_service_id}}"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Capsters",
+          "item": [
+            {
+              "name": "Create Capster",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 201\", function () {",
+                      "    pm.response.to.have.status(201);",
+                      "});",
+                      "",
+                      "pm.test(\"Response has correct structure\", function () {",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.expect(jsonData).to.have.property('code');",
+                      "    pm.expect(jsonData).to.have.property('message');",
+                      "    pm.expect(jsonData).to.have.property('data');",
+                      "});",
+                      "",
+                      "if (pm.response.code === 201) {",
+                      "    var jsonData = pm.response.json();",
+                      "    if (jsonData.data && jsonData.data.id) {",
+                      "        pm.environment.set(\"admin_capster_id\", jsonData.data.id);",
+                      "        pm.collectionVariables.set(\"admin_capster_id\", jsonData.data.id);",
+                      "        console.log(\"Admin Capster ID saved: \" + jsonData.data.id);",
+                      "    }",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{auth_token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"John Doe\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/capsters",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "capsters"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Vouchers",
+          "item": [
+            {
+              "name": "Create Voucher",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 201\", function () {",
+                      "    pm.response.to.have.status(201);",
+                      "});",
+                      "",
+                      "pm.test(\"Response has correct structure\", function () {",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.expect(jsonData).to.have.property('code');",
+                      "    pm.expect(jsonData).to.have.property('message');",
+                      "    pm.expect(jsonData).to.have.property('data');",
+                      "});",
+                      "",
+                      "if (pm.response.code === 201) {",
+                      "    var jsonData = pm.response.json();",
+                      "    if (jsonData.data && jsonData.data.code) {",
+                      "        pm.environment.set(\"admin_voucher_code\", jsonData.data.code);",
+                      "        pm.collectionVariables.set(\"admin_voucher_code\", jsonData.data.code);",
+                      "        console.log(\"Admin Voucher code saved: \" + jsonData.data.code);",
+                      "    }",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{auth_token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"code\": \"WELCOME50\",\n  \"discount_percent\": 50,\n  \"valid_from\": \"2025-11-01T00:00:00Z\",\n  \"valid_to\": \"2025-12-31T23:59:59Z\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/vouchers",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "vouchers"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Member Scan",
+          "item": [
+            {
+              "name": "Scan Member Barcode",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Response has correct structure\", function () {",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.expect(jsonData).to.have.property('code');",
+                      "    pm.expect(jsonData).to.have.property('message');",
+                      "    pm.expect(jsonData).to.have.property('data');",
+                      "});",
+                      "",
+                      "if (pm.response.code === 200) {",
+                      "    var jsonData = pm.response.json();",
+                      "    if (jsonData.data && jsonData.data.id) {",
+                      "        pm.environment.set(\"scan_id\", jsonData.data.id);",
+                      "        pm.collectionVariables.set(\"scan_id\", jsonData.data.id);",
+                      "        console.log(\"Scan ID saved: \" + jsonData.data.id);",
+                      "    }",
+                      "}"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{auth_token}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"barcode\": \"{{user_id}}\",\n  \"scanned_by\": \"Admin Name\",\n  \"location_id\": \"LOC-001\",\n  \"service_id\": \"{{service_id}}\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/admin/member-scans",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "member-scans"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Users",
+          "item": [
+            {
+              "name": "GetUser",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": ""
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/users?limit=5&cursor=72369b29-1f1a-4920-bc78-393f77c62923",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "users"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "5"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "72369b29-1f1a-4920-bc78-393f77c62923"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "New Folder",
+          "item": [
+            {
+              "name": "Dashboard",
+              "request": {
+                "method": "GET",
+                "header": []
+              },
+              "response": []
+            },
+            {
+              "name": "Dashboard Copy",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{auth_token}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/admin/dashboard/performance/highest-rated-capster",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "dashboard",
+                    "performance",
+                    "highest-rated-capster"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Pending Payment",
+              "request": {
+                "method": "GET",
+                "header": []
+              },
+              "response": []
+            },
+            {
+              "name": "Get Transaction History",
+              "request": {
+                "method": "GET",
+                "header": []
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Get Add On",
+      "item": [
+        {
+          "name": "Get Add On",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/add-ons/:serviceId",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "add-ons",
+                ":serviceId"
+              ],
+              "variable": [
+                {
+                  "key": "serviceId",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "History",
+      "item": [
+        {
+          "name": "Start Haircut Process",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"member_id\": \"0d33855e-eac9-48c9-82eb-7c9965899c28\",\r\n    \"service_id\": \"83424a20-4606-4a29-ac2a-675e6339e1cb\",\r\n    \"haircut_name\": \"Mohawk\",\r\n    \"add_ons\": [\r\n        {\r\n            \"id\": \"9c94ba6f-083c-46b5-8def-970ca36a5bee\",\r\n            \"type\": \"coloring\"\r\n        },\r\n        {\r\n            \"id\": \"1850f8a5-f557-4f99-93b3-1b9d912cdd98\",\r\n            \"type\": \"perming\"\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/histories/start",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "histories",
+                "start"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "201",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"member_id\": \"f0db8bea-6b4b-4af1-8dbe-da0f7253067e\",\r\n    \"service_id\": \"83424a20-4606-4a29-ac2a-675e6339e1cb\",\r\n    \"haircut_name\": \"Mohawk\",\r\n    \"add_ons\": [\r\n        {\r\n            \"id\": \"9c94ba6f-083c-46b5-8def-970ca36a5bee\",\r\n            \"type\": \"coloring\"\r\n        },\r\n        {\r\n            \"id\": \"1850f8a5-f557-4f99-93b3-1b9d912cdd98\",\r\n            \"type\": \"perming\"\r\n        }\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/histories/start",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "histories",
+                    "start"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Server",
+                  "value": "Fiber"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 28 Dec 2025 10:20:09 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "978"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 201,\n    \"message\": \"Haircut process started successfully\",\n    \"data\": {\n        \"id\": \"88f14d66-e0f7-4906-a0c9-707c9b357d30\",\n        \"date\": \"2025-12-28T17:15:54.684451+07:00\",\n        \"capster\": {\n            \"id\": \"c50a9758-f95f-415a-a00f-4211de0874ef\",\n            \"name\": \"Wiratmaja\",\n            \"rating\": 0,\n            \"reviews_count\": 0,\n            \"description\": \"\",\n            \"photo_url\": \"\",\n            \"specialties\": null,\n            \"created_at\": \"0001-01-01T00:00:00Z\",\n            \"updated_at\": \"0001-01-01T00:00:00Z\"\n        },\n        \"haircut_name\": \"Mohawk\",\n        \"service\": {\n            \"id\": \"83424a20-4606-4a29-ac2a-675e6339e1cb\",\n            \"name\": \"Haircut\",\n            \"description\": \"Professional haircut service\",\n            \"price\": 50000,\n            \"duration_minutes\": 30,\n            \"is_recommended\": false,\n            \"created_at\": \"2025-11-21T22:59:23.213288+07:00\",\n            \"updated_at\": \"2025-11-21T22:59:23.213288+07:00\"\n        },\n        \"add_ons\": [\n            {\n                \"id\": \"9c94ba6f-083c-46b5-8def-970ca36a5bee\",\n                \"type\": \"coloring\",\n                \"name\": \"Solid Color\",\n                \"price\": 100\n            },\n            {\n                \"id\": \"1850f8a5-f557-4f99-93b3-1b9d912cdd98\",\n                \"type\": \"perming\",\n                \"name\": \"Digital Perm\",\n                \"price\": 100\n            }\n        ],\n        \"transaction_amount\": 50200,\n        \"member_point\": 0,\n        \"created_at\": \"2025-12-28T17:15:54.684451+07:00\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Finish Haircut Process",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"photo_url\": \"88f14d66-e0f7-4906-a0c9-707c9b357d30\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/histories/:id/finish",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "histories",
+                ":id",
+                "finish"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "bdc73b75-a476-4c0d-8194-8c908dc8fde9"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"photo_url\": \"https://asdasdasdasadas.com\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/histories/:id/finish",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "histories",
+                    ":id",
+                    "finish"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "bdc73b75-a476-4c0d-8194-8c908dc8fde9"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Server",
+                  "value": "Fiber"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 28 Dec 2025 10:12:19 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "834"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 200,\n    \"message\": \"Haircut process finished successfully\",\n    \"data\": {\n        \"id\": \"bdc73b75-a476-4c0d-8194-8c908dc8fde9\",\n        \"date\": \"2025-12-28T17:12:14.066895+07:00\",\n        \"capster\": {\n            \"id\": \"c50a9758-f95f-415a-a00f-4211de0874ef\",\n            \"name\": \"Wiratmaja\",\n            \"rating\": 0,\n            \"reviews_count\": 0,\n            \"description\": \"\",\n            \"photo_url\": \"\",\n            \"specialties\": null,\n            \"created_at\": \"0001-01-01T00:00:00Z\",\n            \"updated_at\": \"0001-01-01T00:00:00Z\"\n        },\n        \"haircut_name\": \"Mohawk\",\n        \"service\": {\n            \"id\": \"83424a20-4606-4a29-ac2a-675e6339e1cb\",\n            \"name\": \"Haircut\",\n            \"description\": \"Professional haircut service\",\n            \"price\": 50000,\n            \"duration_minutes\": 30,\n            \"is_recommended\": false,\n            \"created_at\": \"2025-11-21T22:59:23.213288+07:00\",\n            \"updated_at\": \"2025-11-21T22:59:23.213288+07:00\"\n        },\n        \"add_ons\": [],\n        \"last_cut_photo\": \"https://asdasdasdasadas.com\",\n        \"transaction_amount\": 50200,\n        \"member_point\": 50,\n        \"created_at\": \"2025-12-28T17:12:14.066895+07:00\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Customer Record",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/histories/capster",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "histories",
+                "capster"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/histories/capster",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "histories",
+                    "capster"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Server",
+                  "value": "Fiber"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 28 Dec 2025 10:26:11 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "2186"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 200,\n    \"message\": \"Customer records retrieved successfully\",\n    \"data\": {\n        \"items\": [\n            {\n                \"id\": \"0a5f13a3-d9de-42c8-bef5-a1f87604aad4\",\n                \"date\": \"2025-12-28T17:26:06.313029+07:00\",\n                \"member\": {\n                    \"id\": \"0fd03670-943c-4492-b252-7dac59656105\",\n                    \"email\": \"user0@example.com\",\n                    \"phone\": \"+628123456780\",\n                    \"full_name\": \"Wiratmaja\",\n                    \"dob\": \"2006-11-11\",\n                    \"created_at\": \"2025-12-16\",\n                    \"point\": 100,\n                    \"role\": \"user\",\n                    \"status\": \"active\"\n                },\n                \"total_visits\": 2,\n                \"last_served_date\": \"2025-12-28T17:26:06.313029+07:00\",\n                \"last_service_type\": \"Haircut\",\n                \"haircut_name\": \"Mohawk\",\n                \"is_member\": true,\n                \"transaction_amount\": 50200,\n                \"created_at\": \"2025-12-28T17:26:06.313029+07:00\"\n            },\n            {\n                \"id\": \"0cb28738-2239-42f2-b8d0-793907d1ceed\",\n                \"date\": \"2025-12-28T17:25:36.915886+07:00\",\n                \"member\": {\n                    \"id\": \"0fd03670-943c-4492-b252-7dac59656105\",\n                    \"email\": \"user0@example.com\",\n                    \"phone\": \"+628123456780\",\n                    \"full_name\": \"Wiratmaja\",\n                    \"dob\": \"2006-11-11\",\n                    \"created_at\": \"2025-12-16\",\n                    \"point\": 100,\n                    \"role\": \"user\",\n                    \"status\": \"active\"\n                },\n                \"total_visits\": 2,\n                \"last_served_date\": \"2025-12-28T17:25:36.915886+07:00\",\n                \"last_service_type\": \"Haircut\",\n                \"haircut_name\": \"Mohawk\",\n                \"is_member\": true,\n                \"transaction_amount\": 50200,\n                \"created_at\": \"2025-12-28T17:25:36.915886+07:00\"\n            },\n            {\n                \"id\": \"b783e9ad-e5b3-40fc-82da-5b6dad8bebf2\",\n                \"date\": \"2025-12-28T17:25:20.012935+07:00\",\n                \"member\": {\n                    \"id\": \"23c92cdb-3a96-419b-b9ce-aa4ef2c7bd09\",\n                    \"email\": \"john.doe@example.com\",\n                    \"phone\": \"+6281234567892\",\n                    \"full_name\": \"Wiratmaja\",\n                    \"dob\": \"2006-11-11\",\n                    \"created_at\": \"2025-11-21\",\n                    \"point\": 50,\n                    \"role\": \"user\",\n                    \"status\": \"active\"\n                },\n                \"total_visits\": 1,\n                \"last_served_date\": \"2025-12-28T17:25:20.012935+07:00\",\n                \"last_service_type\": \"Haircut\",\n                \"haircut_name\": \"Mohawk\",\n                \"is_member\": true,\n                \"transaction_amount\": 50200,\n                \"created_at\": \"2025-12-28T17:25:20.012935+07:00\"\n            },\n            {\n                \"id\": \"88f14d66-e0f7-4906-a0c9-707c9b357d30\",\n                \"date\": \"2025-12-28T17:15:54.684451+07:00\",\n                \"member\": {\n                    \"id\": \"f0db8bea-6b4b-4af1-8dbe-da0f7253067e\",\n                    \"email\": \"user@example.com\",\n                    \"phone\": \"+6281234567890\",\n                    \"full_name\": \"Wiratmaja\",\n                    \"dob\": \"2006-11-11\",\n                    \"created_at\": \"2025-11-21\",\n                    \"point\": 800,\n                    \"role\": \"user\",\n                    \"status\": \"active\"\n                },\n                \"total_visits\": 1,\n                \"last_served_date\": \"2025-12-28T17:15:54.684451+07:00\",\n                \"last_service_type\": \"Haircut\",\n                \"haircut_name\": \"Mohawk\",\n                \"is_member\": true,\n                \"transaction_amount\": 50200,\n                \"created_at\": \"2025-12-28T17:15:54.684451+07:00\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Member History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/histories?limit=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "histories"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/histories",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "histories"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Server",
+                  "value": "Fiber"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 28 Dec 2025 10:31:35 GMT"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1032"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"code\": 200,\n    \"message\": \"History retrieved successfully\",\n    \"data\": {\n        \"items\": [\n            {\n                \"id\": \"88f14d66-e0f7-4906-a0c9-707c9b357d30\",\n                \"date\": \"2025-12-28T17:15:54.684451+07:00\",\n                \"capster\": {\n                    \"id\": \"c50a9758-f95f-415a-a00f-4211de0874ef\",\n                    \"name\": \"Wiratmaja\",\n                    \"rating\": 0,\n                    \"reviews_count\": 0,\n                    \"description\": \"\",\n                    \"photo_url\": \"\",\n                    \"specialties\": null,\n                    \"created_at\": \"0001-01-01T00:00:00Z\",\n                    \"updated_at\": \"0001-01-01T00:00:00Z\"\n                },\n                \"haircut_name\": \"Mohawk\",\n                \"service\": {\n                    \"id\": \"83424a20-4606-4a29-ac2a-675e6339e1cb\",\n                    \"name\": \"Haircut\",\n                    \"description\": \"Professional haircut service\",\n                    \"price\": 50000,\n                    \"duration_minutes\": 30,\n                    \"is_recommended\": false,\n                    \"created_at\": \"2025-11-21T22:59:23.213288+07:00\",\n                    \"updated_at\": \"2025-11-21T22:59:23.213288+07:00\"\n                },\n                \"add_ons\": [\n                    {\n                        \"id\": \"9c94ba6f-083c-46b5-8def-970ca36a5bee\",\n                        \"type\": \"coloring\",\n                        \"name\": \"Solid Color\",\n                        \"price\": 100\n                    },\n                    {\n                        \"id\": \"1850f8a5-f557-4f99-93b3-1b9d912cdd98\",\n                        \"type\": \"perming\",\n                        \"name\": \"Digital Perm\",\n                        \"price\": 100\n                    }\n                ],\n                \"last_cut_photo\": \"https://asdasdasdasadas.com\",\n                \"transaction_amount\": 50200,\n                \"member_point\": 50,\n                \"created_at\": \"2025-12-28T17:15:54.684451+07:00\"\n            }\n        ]\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "QR Scan",
+      "item": [
+        {
+          "name": "Scan QR",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer YOUR_JWT_TOKEN"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"qr_code\": \"encrypted_capster_id_here\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/qr/scan",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "qr",
+                "scan"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Product",
+      "item": [
+        {
+          "name": "Get Active Category",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/categories?cursor=&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories"
+              ],
+              "query": [
+                {
+                  "key": "cursor",
+                  "value": ""
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Active Product",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/products?cursor=&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "cursor",
+                  "value": ""
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{auth_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000/api/v1"
+    },
+    {
+      "key": "auth_token",
+      "value": ""
+    },
+    {
+      "key": "user_id",
+      "value": ""
+    },
+    {
+      "key": "user_email",
+      "value": ""
+    },
+    {
+      "key": "admin_service_id",
+      "value": ""
+    },
+    {
+      "key": "admin_capster_id",
+      "value": ""
+    },
+    {
+      "key": "admin_voucher_code",
+      "value": ""
+    },
+    {
+      "key": "capster_id",
+      "value": ""
+    },
+    {
+      "key": "service_id",
+      "value": ""
+    },
+    {
+      "key": "booking_id",
+      "value": ""
+    },
+    {
+      "key": "review_id",
+      "value": ""
+    },
+    {
+      "key": "voucher_code",
+      "value": ""
+    },
+    {
+      "key": "photo_id",
+      "value": ""
+    },
+    {
+      "key": "photo_url",
+      "value": ""
+    },
+    {
+      "key": "refresh_token",
+      "value": ""
+    }
+  ]
+}
