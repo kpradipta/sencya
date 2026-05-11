@@ -4,6 +4,7 @@ import 'package:barbershop_app/theme/app_theme.dart';
 import 'package:barbershop_app/core/routes/app_router.dart';
 import 'package:barbershop_app/core/di/injection_container.dart' as di;
 import 'package:barbershop_app/presentation/bloc/auth/auth_bloc.dart';
+import 'package:barbershop_app/presentation/bloc/auth/auth_event.dart';
 import 'package:barbershop_app/presentation/bloc/booking/booking_bloc.dart';
 import 'package:barbershop_app/presentation/bloc/voucher/voucher_bloc.dart';
 import 'package:barbershop_app/presentation/bloc/review/review_bloc.dart';
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => di.sl<AuthBloc>()),
+        BlocProvider(create: (_) => di.sl<AuthBloc>()..add(AuthCheckRequested())),
         BlocProvider(create: (_) => di.sl<BookingBloc>()),
         BlocProvider(create: (_) => di.sl<VoucherBloc>()),
         BlocProvider(create: (_) => di.sl<ReviewBloc>()),

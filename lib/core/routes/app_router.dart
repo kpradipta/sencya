@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../presentation/bloc/auth/auth_bloc.dart';
+import '../../presentation/bloc/auth/auth_state.dart';
 import '../../presentation/pages/auth/login_page.dart';
 import '../../presentation/pages/auth/register_page.dart';
 import '../../presentation/pages/home/home_page.dart';
@@ -24,6 +27,22 @@ class AppRouter {
   static final GoRouter router = GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/login',
+    redirect: (context, state) {
+      final authState = context.read<AuthBloc>().state;
+      final isLoggingIn = state.matchedLocation == '/login' || state.matchedLocation == '/register';
+
+      if (authState is Unauthenticated) {
+        return isLoggingIn ? null : '/login';
+      }
+
+      if (authState is Authenticated) {
+        if (isLoggingIn) {
+          return authState.user.isCapster ? '/capster-home' : '/home';
+        }
+      }
+
+      return null;
+    },
     routes: [
       GoRoute(
         path: '/login',
