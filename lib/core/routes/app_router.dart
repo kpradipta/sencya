@@ -24,13 +24,16 @@ import '../../presentation/pages/splash/splash_page.dart';
 import '../../domain/entities/service.dart';
 import '../../domain/entities/capster.dart';
 
-final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>(
+  debugLabel: 'root',
+);
 
 class GoRouterRefreshStream extends ChangeNotifier {
   GoRouterRefreshStream(Stream<dynamic> stream) {
-    _subscription = stream.asBroadcastStream().listen(
-          (dynamic _) => notifyListeners(),
-        );
+    _subscription = stream.asBroadcastStream().listen((dynamic state) {
+      debugPrint('GoRouterRefreshStream: Auth state changed to $state');
+      notifyListeners();
+    });
   }
 
   late final StreamSubscription<dynamic> _subscription;
@@ -46,14 +49,15 @@ class AppRouter {
   static final GoRouter router = GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/',
-    refreshListenable: GoRouterRefreshStream(
-      GetIt.I<AuthBloc>().stream,
-    ),
+    refreshListenable: GoRouterRefreshStream(GetIt.I<AuthBloc>().stream),
     redirect: (context, state) {
       final authState = context.read<AuthBloc>().state;
-      final isLoggingIn = state.matchedLocation == '/login' || state.matchedLocation == '/register';
+      final isLoggingIn =
+          state.matchedLocation == '/login' ||
+          state.matchedLocation == '/register';
       final isSplash = state.matchedLocation == '/';
 
+      // While auth is loading or not yet checked, keep on splash
       if (authState is AuthInitial) {
         return isSplash ? null : '/';
       }
@@ -76,25 +80,17 @@ class AppRouter {
       return null;
     },
     routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => const SplashPage(),
-      ),
-      GoRoute(
-        path: '/login',
-        builder: (context, state) => const LoginPage(),
-      ),
+      GoRoute(path: '/', builder: (context, state) => const SplashPage()),
+      GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
       GoRoute(
         path: '/register',
         builder: (context, state) => const RegisterPage(),
       ),
-      GoRoute(
-        path: '/home',
-        builder: (context, state) => const HomePage(),
-      ),
+      GoRoute(path: '/home', builder: (context, state) => const HomePage()),
       GoRoute(
         path: '/capster-home',
-        builder: (context, state) => const CapsterMainPage(), // Use the new Main Page
+        builder: (context, state) =>
+            const CapsterMainPage(), // Use the new Main Page
       ),
       GoRoute(
         path: '/earnings-analytics',
