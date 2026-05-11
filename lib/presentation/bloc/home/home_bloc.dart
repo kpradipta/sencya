@@ -3,8 +3,6 @@ import '../../../domain/repositories/service_repository.dart';
 import '../../../domain/repositories/capster_repository.dart';
 import 'home_event.dart';
 import 'home_state.dart';
-import '../../../domain/entities/service.dart';
-import '../../../domain/entities/capster.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final ServiceRepository serviceRepository;

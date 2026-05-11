@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import '../../../domain/entities/booking.dart';
 
 abstract class BookingEvent extends Equatable {
   const BookingEvent();

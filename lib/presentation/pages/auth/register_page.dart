@@ -28,7 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
             phone: _phoneController.text,
             password: _passwordController.text,
             name: _nameController.text,
-            dob: _dobController.text, // format: 2006-11-11
+            dob: _dobController.text,
           ),
         );
   }
@@ -36,8 +36,9 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => context.pop()),
+        leading: IconButton(icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20), onPressed: () => context.pop()),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -47,84 +48,95 @@ class _RegisterPageState extends State<RegisterPage> {
             context.go('/home');
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message, style: TextStyle(color: AppColors.background)), backgroundColor: AppColors.error),
+              SnackBar(content: Text(state.message, style: const TextStyle(color: Colors.white)), backgroundColor: AppColors.error),
             );
           }
         },
         child: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  'Join Us.',
-                  style: Theme.of(context).textTheme.displayLarge,
+                const Text(
+                  'Join the Elite.',
+                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, letterSpacing: -1),
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  'Create an account to book your appointments.',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
+                const Text(
+                  'Create your professional profile to start managing your shop.',
+                  style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
                 ),
-                const SizedBox(height: 32),
-                TextField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Full Name'),
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(labelText: 'Email Address'),
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _phoneController,
-                  decoration: const InputDecoration(labelText: 'Phone Number (+62...)'),
-                  keyboardType: TextInputType.phone,
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _dobController,
-                  decoration: const InputDecoration(labelText: 'Date of Birth (YYYY-MM-DD)'),
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                        color: AppColors.textSecondary,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscurePassword = !_obscurePassword;
-                        });
-                      },
-                    ),
-                  ),
+                const SizedBox(height: 40),
+                _buildField('Full Name', _nameController, 'Enter your name'),
+                const SizedBox(height: 20),
+                _buildField('Email Address', _emailController, 'name@barbershop.com', keyboardType: TextInputType.emailAddress),
+                const SizedBox(height: 20),
+                _buildField('Phone Number', _phoneController, '+62...', keyboardType: TextInputType.phone),
+                const SizedBox(height: 20),
+                _buildField('Date of Birth', _dobController, 'YYYY-MM-DD'),
+                const SizedBox(height: 20),
+                _buildField(
+                  'Password',
+                  _passwordController,
+                  '••••••••',
                   obscureText: _obscurePassword,
+                  suffixIcon: IconButton(
+                    icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off, color: AppColors.textSecondary, size: 20),
+                    onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                  ),
                 ),
                 const SizedBox(height: 48),
                 BlocBuilder<AuthBloc, AuthState>(
                   builder: (context, state) {
-                    if (state is AuthLoading) {
-                      return const Center(child: CircularProgressIndicator(color: AppColors.elegantGold));
-                    }
-                    return ElevatedButton(
-                      onPressed: _onRegister,
-                      child: const Text('REGISTER'),
+                    final isLoading = state is AuthLoading;
+                    return Container(
+                      height: 60,
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.primaryRed.withOpacity(0.2),
+                            blurRadius: 20,
+                            offset: const Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                      child: ElevatedButton(
+                        onPressed: isLoading ? null : _onRegister,
+                        child: isLoading
+                            ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                            : const Text('CREATE ACCOUNT', style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
                     );
                   },
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 40),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildField(String label, TextEditingController controller, String hint, {bool obscureText = false, Widget? suffixIcon, TextInputType? keyboardType}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.white70)),
+        const SizedBox(height: 8),
+        TextField(
+          controller: controller,
+          obscureText: obscureText,
+          keyboardType: keyboardType,
+          style: const TextStyle(color: Colors.white),
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: const TextStyle(color: Colors.white24, fontSize: 14),
+            suffixIcon: suffixIcon,
+          ),
+        ),
+      ],
     );
   }
 }

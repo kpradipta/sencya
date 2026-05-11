@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import '../../../domain/entities/review.dart';
 
 abstract class ReviewEvent extends Equatable {
   const ReviewEvent();

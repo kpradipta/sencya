@@ -1,4 +1,5 @@
 import '../../domain/entities/user.dart';
+import 'capster_model.dart';
 
 class UserModel extends User {
   const UserModel({
@@ -6,14 +7,16 @@ class UserModel extends User {
     required super.email,
     required super.name,
     required super.phone,
+    super.capster,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       id: json['id'] ?? '',
       email: json['email'] ?? '',
-      name: json['name'] ?? '',
+      name: json['full_name'] ?? json['name'] ?? '',
       phone: json['phone'] ?? '',
+      capster: json['capster'] != null ? CapsterModel.fromJson(json['capster']) : null,
     );
   }
 
@@ -23,6 +26,7 @@ class UserModel extends User {
       'email': email,
       'name': name,
       'phone': phone,
+      'capster': capster,
     };
   }
 }

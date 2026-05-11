@@ -10,6 +10,11 @@ import '../../presentation/pages/ai/ai_analysis_result_page.dart';
 import '../../presentation/pages/ai/ai_generation_page.dart';
 import '../../presentation/pages/profile/profile_page.dart';
 import '../../presentation/pages/booking/my_bookings_page.dart';
+import '../../presentation/pages/earnings/earnings_analytics_page.dart';
+import '../../presentation/pages/availability/manage_availability_page.dart';
+import '../../presentation/pages/service/active_service_timer_page.dart';
+import '../../presentation/pages/clients/client_directory_page.dart';
+import '../../presentation/pages/main/capster_main_page.dart';
 import '../../domain/entities/service.dart';
 import '../../domain/entities/capster.dart';
 
@@ -31,6 +36,26 @@ class AppRouter {
       GoRoute(
         path: '/home',
         builder: (context, state) => const HomePage(),
+      ),
+      GoRoute(
+        path: '/capster-home',
+        builder: (context, state) => const CapsterMainPage(), // Use the new Main Page
+      ),
+      GoRoute(
+        path: '/earnings-analytics',
+        builder: (context, state) => const EarningsAnalyticsPage(),
+      ),
+      GoRoute(
+        path: '/manage-availability',
+        builder: (context, state) => const ManageAvailabilityPage(),
+      ),
+      GoRoute(
+        path: '/active-service-timer',
+        builder: (context, state) => const ActiveServiceTimerPage(),
+      ),
+      GoRoute(
+        path: '/client-directory',
+        builder: (context, state) => const ClientDirectoryPage(),
       ),
       GoRoute(
         path: '/booking',
@@ -61,7 +86,10 @@ class AppRouter {
         path: '/ai-generate',
         builder: (context, state) {
           final extras = state.extra as Map<String, dynamic>;
-          return AIGenerationPage(styleName: extras['styleName']);
+          return AIGenerationPage(
+            styleName: extras['styleName'],
+            requestId: extras['requestId'],
+          );
         },
       ),
       GoRoute(

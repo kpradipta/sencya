@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import '../../core/network/api_client.dart';
 import '../../core/error/exceptions.dart';
 import '../models/booking_model.dart';
-import 'package:intl/intl.dart';
 
 abstract class BookingRemoteDataSource {
   Future<BookingModel> createBooking({

@@ -9,8 +9,20 @@ import 'package:barbershop_app/presentation/bloc/voucher/voucher_bloc.dart';
 import 'package:barbershop_app/presentation/bloc/review/review_bloc.dart';
 import 'package:barbershop_app/presentation/bloc/ai/ai_bloc.dart';
 
+import 'package:flutter/services.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Enable Edge-to-Edge support
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarIconBrightness: Brightness.light,
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.light,
+  ));
+
   await di.init();
   runApp(const MyApp());
 }

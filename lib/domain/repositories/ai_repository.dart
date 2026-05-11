@@ -9,4 +9,12 @@ abstract class AIRepository {
     required String styleName,
     List<String>? addOns,
   });
+  Future<Either<Failure, AIGenerationRequest>> generateImageByName({
+    required String photoId,
+    required List<StyleRecommendation> recommendations,
+  });
+  Future<Either<Failure, List<GeneratedPhoto>>> getGeneratedPhotos({
+    required String userId,
+    required String requestId,
+  });
 }

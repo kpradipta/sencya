@@ -17,6 +17,7 @@ import '../../presentation/bloc/booking/booking_bloc.dart';
 import '../../presentation/bloc/voucher/voucher_bloc.dart';
 import '../../presentation/bloc/review/review_bloc.dart';
 import '../../presentation/bloc/ai/ai_bloc.dart';
+import '../../presentation/bloc/capster_home/capster_home_bloc.dart';
 import '../../domain/repositories/booking_repository.dart';
 import '../../data/datasources/booking_remote_data_source.dart';
 import '../../data/repositories/booking_repository_impl.dart';
@@ -101,6 +102,12 @@ Future<void> init() async {
     () => AIRepositoryImpl(remoteDataSource: sl()),
   );
   sl.registerFactory(() => AIBloc(aiRepository: sl()));
+
+  // Features - Capster Home
+  sl.registerFactory(() => CapsterHomeBloc(
+    capsterRepository: sl(),
+    serviceRepository: sl(),
+  ));
 
   // Features - Home
   sl.registerFactory(() => HomeBloc(
