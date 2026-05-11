@@ -50,7 +50,7 @@ Future<void> init() async {
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(remoteDataSource: sl()),
   );
-  sl.registerFactory(() => AuthBloc(authRepository: sl()));
+  sl.registerLazySingleton(() => AuthBloc(authRepository: sl()));
 
   // Features - Services
   sl.registerLazySingleton<ServiceRemoteDataSource>(
