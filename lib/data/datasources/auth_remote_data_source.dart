@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import '../../core/network/api_client.dart';
 import '../../core/error/exceptions.dart';
 import '../models/user_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/storage/secret_storage.dart';
 
 abstract class AuthRemoteDataSource {
   Future<UserModel> login(String email, String password);
@@ -19,11 +19,11 @@ abstract class AuthRemoteDataSource {
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final ApiClient apiClient;
-  final SharedPreferences sharedPreferences;
+  final SecretStorage secretStorage;
 
   AuthRemoteDataSourceImpl({
     required this.apiClient,
-    required this.sharedPreferences,
+    required this.secretStorage,
   });
 
   @override
@@ -47,10 +47,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         final token = data['session_token'];
         final refreshToken = data['refresh_token'];
         if (token != null) {
-          await sharedPreferences.setString('auth_token', token);
+          await secretStorage.saveToken(token);
         }
         if (refreshToken != null) {
-          await sharedPreferences.setString('refresh_token', refreshToken);
+          await secretStorage.saveRefreshToken(refreshToken);
         }
         
         final userJson = Map<String, dynamic>.from(data['user']);
@@ -94,7 +94,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         final data = response.data['data'];
         final token = data['token'];
         if (token != null) {
-          await sharedPreferences.setString('auth_token', token);
+          await secretStorage.saveToken(token);
         }
         return UserModel.fromJson(data['user']);
       } else {
@@ -112,13 +112,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<void> logout() async {
     try {
-      final refreshToken = sharedPreferences.getString('refresh_token') ?? '';
+      final refreshToken = await secretStorage.getRefreshToken() ?? '';
       await apiClient.dio.post(
         '/auth/logout',
         data: {'refresh_token': refreshToken},
       );
-      await sharedPreferences.remove('auth_token');
-      await sharedPreferences.remove('refresh_token');
+      await secretStorage.clearTokens();
     } on DioException catch (e) {
       throw ServerException(
         message: e.response?.data['message'] ?? 'Logout failed',

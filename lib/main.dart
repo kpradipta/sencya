@@ -4,6 +4,8 @@ import 'package:barbershop_app/theme/app_theme.dart';
 import 'package:barbershop_app/core/routes/app_router.dart';
 import 'package:barbershop_app/core/di/injection_container.dart' as di;
 import 'package:barbershop_app/presentation/bloc/auth/auth_bloc.dart';
+import 'package:barbershop_app/presentation/bloc/auth/auth_event.dart';
+
 import 'package:barbershop_app/presentation/bloc/booking/booking_bloc.dart';
 import 'package:barbershop_app/presentation/bloc/voucher/voucher_bloc.dart';
 import 'package:barbershop_app/presentation/bloc/review/review_bloc.dart';
@@ -27,8 +29,33 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // Re-check auth when the user brings the app back to the foreground
+      di.sl<AuthBloc>().add(AuthCheckRequested());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

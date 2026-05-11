@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../storage/secret_storage.dart';
 import '../network/api_client.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../data/datasources/auth_remote_data_source.dart';
@@ -35,8 +36,8 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   // External
-  final sharedPreferences = await SharedPreferences.getInstance();
-  sl.registerLazySingleton(() => sharedPreferences);
+  sl.registerLazySingleton(() => const FlutterSecureStorage());
+  sl.registerLazySingleton(() => SecretStorage(sl()));
   sl.registerLazySingleton(() => Dio());
 
   // Core
@@ -44,12 +45,12 @@ Future<void> init() async {
 
   // Features - Auth
   sl.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSourceImpl(apiClient: sl(), sharedPreferences: sl()),
+    () => AuthRemoteDataSourceImpl(apiClient: sl(), secretStorage: sl()),
   );
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(remoteDataSource: sl()),
   );
-  sl.registerFactory(() => AuthBloc(authRepository: sl()));
+  sl.registerLazySingleton(() => AuthBloc(authRepository: sl()));
 
   // Features - Services
   sl.registerLazySingleton<ServiceRemoteDataSource>(

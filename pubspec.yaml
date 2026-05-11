@@ -44,6 +44,7 @@ dependencies:
   go_router: ^17.2.3
   image_picker: ^1.2.2
   intl: ^0.20.2
+  flutter_secure_storage: ^10.1.0
 
 dev_dependencies:
   flutter_test:

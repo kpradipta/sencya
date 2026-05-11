@@ -11,9 +11,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<RegisterRequested>(_onRegisterRequested);
     on<LogoutRequested>(_onLogoutRequested);
     on<GetMeRequested>(_onGetMeRequested);
+    on<AuthCheckRequested>(_onAuthCheckRequested);
   }
 
-  Future<void> _onLoginRequested(LoginRequested event, Emitter<AuthState> emit) async {
+  Future<void> _onLoginRequested(
+    LoginRequested event,
+    Emitter<AuthState> emit,
+  ) async {
     emit(AuthLoading());
     final result = await authRepository.login(event.email, event.password);
     result.fold(
@@ -22,14 +26,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 
-  Future<void> _onRegisterRequested(RegisterRequested event, Emitter<AuthState> emit) async {
+  Future<void> _onRegisterRequested(
+    RegisterRequested event,
+    Emitter<AuthState> emit,
+  ) async {
     emit(AuthLoading());
     final result = await authRepository.register(
-      event.email, 
-      event.phone, 
-      event.password, 
-      event.name, 
-      event.dob
+      event.email,
+      event.phone,
+      event.password,
+      event.name,
+      event.dob,
     );
     result.fold(
       (failure) => emit(AuthError(failure.message)),
@@ -37,7 +44,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 
-  Future<void> _onLogoutRequested(LogoutRequested event, Emitter<AuthState> emit) async {
+  Future<void> _onLogoutRequested(
+    LogoutRequested event,
+    Emitter<AuthState> emit,
+  ) async {
     emit(AuthLoading());
     final result = await authRepository.logout();
     result.fold(
@@ -46,8 +56,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 
-  Future<void> _onGetMeRequested(GetMeRequested event, Emitter<AuthState> emit) async {
+  Future<void> _onGetMeRequested(
+    GetMeRequested event,
+    Emitter<AuthState> emit,
+  ) async {
     emit(AuthLoading());
+    final result = await authRepository.getMe();
+    result.fold(
+      (failure) => emit(Unauthenticated()),
+      (user) => emit(Authenticated(user)),
+    );
+  }
+
+  Future<void> _onAuthCheckRequested(
+    AuthCheckRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    // If we have a token, getMe will automatically use it via ApiClient interceptor
     final result = await authRepository.getMe();
     result.fold(
       (failure) => emit(Unauthenticated()),

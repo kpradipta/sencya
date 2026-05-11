@@ -39,10 +39,19 @@ class _AIUploadPageState extends State<AIUploadPage> {
       body: BlocListener<AIBloc, AIState>(
         listener: (context, state) {
           if (state is AIAnalysisLoaded) {
-            context.pushReplacement('/ai-results', extra: {'analysis': state.analysis});
+            context.pushReplacement(
+              '/ai-results',
+              extra: {'analysis': state.analysis},
+            );
           } else if (state is AIError) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message, style: TextStyle(color: AppColors.background)), backgroundColor: AppColors.error),
+              SnackBar(
+                content: Text(
+                  state.message,
+                  style: TextStyle(color: AppColors.background),
+                ),
+                backgroundColor: AppColors.error,
+              ),
             );
           }
         },
@@ -53,12 +62,16 @@ class _AIUploadPageState extends State<AIUploadPage> {
             children: [
               Text(
                 'Upload a photo to get started.',
-                style: Theme.of(context).textTheme.displayLarge?.copyWith(fontSize: 32),
+                style: Theme.of(
+                  context,
+                ).textTheme.displayLarge?.copyWith(fontSize: 32),
               ),
               const SizedBox(height: 16),
               Text(
                 'Our AI will analyze your face shape and recommend the best hairstyles for you.',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
               ),
               const SizedBox(height: 48),
               Expanded(
@@ -68,15 +81,27 @@ class _AIUploadPageState extends State<AIUploadPage> {
                     decoration: BoxDecoration(
                       color: AppColors.surface,
                       borderRadius: BorderRadius.circular(24),
-                      border: Border.all(color: AppColors.borderStroke, style: BorderStyle.solid),
+                      border: Border.all(
+                        color: AppColors.borderStroke,
+                        style: BorderStyle.solid,
+                      ),
                     ),
                     child: _image == null
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.add_a_photo_outlined, size: 64, color: AppColors.elegantGold.withOpacity(0.5)),
+                              Icon(
+                                Icons.add_a_photo_outlined,
+                                size: 64,
+                                color: AppColors.elegantGold.withOpacity(0.5),
+                              ),
                               const SizedBox(height: 16),
-                              const Text('Tap to select photo', style: TextStyle(color: AppColors.textSecondary)),
+                              const Text(
+                                'Tap to select photo',
+                                style: TextStyle(
+                                  color: AppColors.textSecondary,
+                                ),
+                              ),
                             ],
                           )
                         : ClipRRect(
@@ -90,13 +115,19 @@ class _AIUploadPageState extends State<AIUploadPage> {
               BlocBuilder<AIBloc, AIState>(
                 builder: (context, state) {
                   if (state is AILoading) {
-                    return const Center(child: CircularProgressIndicator(color: AppColors.elegantGold));
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.elegantGold,
+                      ),
+                    );
                   }
                   return ElevatedButton(
                     onPressed: _image == null
                         ? null
                         : () {
-                            context.read<AIBloc>().add(AnalyzePhotoRequested(_image!));
+                            context.read<AIBloc>().add(
+                              AnalyzePhotoRequested(_image!),
+                            );
                           },
                     child: const Text('ANALYZE PHOTO'),
                   );

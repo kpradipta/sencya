@@ -33,18 +33,14 @@ class _CapsterMainPageState extends State<CapsterMainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _pages,
-      ),
+      body: IndexedStack(index: _selectedIndex, children: _pages),
       bottomNavigationBar: Container(
-        padding: EdgeInsets.only(
-          top: 0,
-          bottom: MediaQuery.of(context).padding.bottom > 0 ? MediaQuery.of(context).padding.bottom : 4,
-        ),
+        padding: EdgeInsets.only(top: 0),
         decoration: BoxDecoration(
           color: AppColors.background.withOpacity(0.95),
-          border: const Border(top: BorderSide(color: AppColors.borderDark, width: 0.5)),
+          border: const Border(
+            top: BorderSide(color: AppColors.borderDark, width: 0.5),
+          ),
         ),
         child: BottomNavigationBar(
           currentIndex: _selectedIndex,
@@ -56,8 +52,14 @@ class _CapsterMainPageState extends State<CapsterMainPage> {
           unselectedItemColor: Colors.white24,
           selectedFontSize: 10,
           unselectedFontSize: 10,
-          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 0.5),
-          unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 0.5),
+          selectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.5,
+          ),
+          unselectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.5,
+          ),
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.calendar_today, size: 24),
