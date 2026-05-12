@@ -165,6 +165,14 @@ class DeveloperSettingsView extends StatelessWidget {
             UpdateSetting(DevSettingsStorage.showDebugButtonsKey, val),
           ),
         ),
+        _buildSwitchRow(
+          context,
+          'Use Mock AI Features:',
+          state.useMockAi,
+          (val) => context.read<DevSettingsBloc>().add(
+            UpdateSetting(DevSettingsStorage.mockAiFeaturesKey, val),
+          ),
+        ),
       ],
     );
   }

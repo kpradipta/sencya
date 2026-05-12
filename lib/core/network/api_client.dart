@@ -13,11 +13,14 @@ class ApiClient {
   }
 
   Future<void> _init() async {
-    final env = await DevSettingsStorage.getString(DevSettingsStorage.apiEnvironmentKey, defaultValue: 'prod');
+    final env = await DevSettingsStorage.getString(
+      DevSettingsStorage.apiEnvironmentKey,
+      defaultValue: 'dev',
+    );
     _dio.options.baseUrl = _getBaseUrl(env);
     _dio.options.connectTimeout = const Duration(seconds: 15);
     _dio.options.receiveTimeout = const Duration(seconds: 15);
-    
+
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
@@ -31,7 +34,7 @@ class ApiClient {
         onError: (DioException error, handler) async {
           if (error.response?.statusCode == 401) {
             final refreshToken = await _secretStorage.getRefreshToken();
-            
+
             if (refreshToken != null) {
               try {
                 // Attempt to refresh the token
@@ -41,9 +44,11 @@ class ApiClient {
                 );
 
                 if (refreshResponse.statusCode == 200) {
-                  final newToken = refreshResponse.data['data']['session_token'];
-                  final newRefreshToken = refreshResponse.data['data']['refresh_token'];
-                  
+                  final newToken =
+                      refreshResponse.data['data']['session_token'];
+                  final newRefreshToken =
+                      refreshResponse.data['data']['refresh_token'];
+
                   await _secretStorage.saveToken(newToken);
                   if (newRefreshToken != null) {
                     await _secretStorage.saveRefreshToken(newRefreshToken);
@@ -52,7 +57,7 @@ class ApiClient {
                   // Retry the original request
                   final options = error.requestOptions;
                   options.headers['Authorization'] = 'Bearer $newToken';
-                  
+
                   final response = await _dio.fetch(options);
                   return handler.resolve(response);
                 }
@@ -88,7 +93,10 @@ class ApiClient {
   }
 
   Future<void> refreshBaseUrl() async {
-    final env = await DevSettingsStorage.getString(DevSettingsStorage.apiEnvironmentKey, defaultValue: 'prod');
+    final env = await DevSettingsStorage.getString(
+      DevSettingsStorage.apiEnvironmentKey,
+      defaultValue: 'prod',
+    );
     _dio.options.baseUrl = _getBaseUrl(env);
   }
 }

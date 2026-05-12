@@ -11,14 +11,27 @@ class EarningsAnalyticsPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.chevron_left, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.chevron_left, color: Colors.white),
+        //   onPressed: () => Navigator.pop(context),
+        // ),
+        title: const Text(
+          'Earnings & Analytics',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
         ),
-        title: const Text('Earnings & Analytics', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
         actions: [
-          IconButton(icon: const Icon(Icons.calendar_month, color: Colors.white), onPressed: () {}),
-          IconButton(icon: const Icon(Icons.notifications, color: Colors.white), onPressed: () {}),
+          IconButton(
+            icon: const Icon(Icons.calendar_month, color: Colors.white),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.notifications, color: Colors.white),
+            onPressed: () {},
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -38,7 +51,14 @@ class EarningsAnalyticsPage extends StatelessWidget {
                 children: [
                   Icon(Icons.info_outline, color: Colors.orange, size: 16),
                   SizedBox(width: 8),
-                  Text('Simulated Data: API integration in progress', style: TextStyle(color: Colors.orange, fontSize: 12, fontWeight: FontWeight.bold)),
+                  Text(
+                    'Simulated Data: API integration in progress',
+                    style: TextStyle(
+                      color: Colors.orange,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -48,9 +68,23 @@ class EarningsAnalyticsPage extends StatelessWidget {
             const SizedBox(height: 16),
             Row(
               children: [
-                Expanded(child: _buildSmallStat('Tips', '\$412.00', '+5%', Colors.green)),
+                Expanded(
+                  child: _buildSmallStat(
+                    'Tips',
+                    '\$412.00',
+                    '+5%',
+                    Colors.green,
+                  ),
+                ),
                 const SizedBox(width: 12),
-                Expanded(child: _buildSmallStat('Total Cuts', '58', '-2%', Colors.orange)),
+                Expanded(
+                  child: _buildSmallStat(
+                    'Total Cuts',
+                    '58',
+                    '-2%',
+                    Colors.orange,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 24),
@@ -87,7 +121,11 @@ class EarningsAnalyticsPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
-        border: isActive ? const Border(bottom: BorderSide(color: AppColors.primaryRed, width: 2)) : null,
+        border: isActive
+            ? const Border(
+                bottom: BorderSide(color: AppColors.primaryRed, width: 2),
+              )
+            : null,
       ),
       child: Text(
         label,
@@ -120,12 +158,26 @@ class EarningsAnalyticsPage extends StatelessWidget {
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Total Revenue', style: TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w500)),
+              Text(
+                'Total Revenue',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
               Icon(Icons.trending_up, color: Colors.white, size: 20),
             ],
           ),
           const SizedBox(height: 8),
-          const Text('\$2,410.50', style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.w900)),
+          const Text(
+            '\$2,410.50',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 32,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
           const SizedBox(height: 12),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -133,14 +185,26 @@ class EarningsAnalyticsPage extends StatelessWidget {
               color: Colors.white24,
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Text('+14.2% from last week', style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
+            child: const Text(
+              '+14.2% from last week',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSmallStat(String label, String value, String trend, Color trendColor) {
+  Widget _buildSmallStat(
+    String label,
+    String value,
+    String trend,
+    Color trendColor,
+  ) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -151,11 +215,32 @@ class EarningsAnalyticsPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: const TextStyle(color: AppColors.textSecondary, fontSize: 12, fontWeight: FontWeight.w500)),
+          Text(
+            label,
+            style: const TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
           const SizedBox(height: 4),
-          Text(value, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+          Text(
+            value,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           const SizedBox(height: 4),
-          Text(trend, style: TextStyle(color: trendColor, fontSize: 10, fontWeight: FontWeight.bold)),
+          Text(
+            trend,
+            style: TextStyle(
+              color: trendColor,
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ],
       ),
     );
@@ -178,11 +263,28 @@ class EarningsAnalyticsPage extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Weekly Performance', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-                  Text('Mon, Oct 16 - Sun, Oct 22', style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
+                  Text(
+                    'Weekly Performance',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'Mon, Oct 16 - Sun, Oct 22',
+                    style: TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 12,
+                    ),
+                  ),
                 ],
               ),
-              Icon(Icons.info_outline, color: AppColors.textSecondary, size: 20),
+              Icon(
+                Icons.info_outline,
+                color: AppColors.textSecondary,
+                size: 20,
+              ),
             ],
           ),
           const SizedBox(height: 32),
@@ -217,13 +319,25 @@ class EarningsAnalyticsPage extends StatelessWidget {
           decoration: BoxDecoration(
             color: isToday ? AppColors.primaryRed : AppColors.borderDark,
             borderRadius: BorderRadius.circular(10),
-            boxShadow: isToday ? [
-              BoxShadow(color: AppColors.primaryRed.withOpacity(0.4), blurRadius: 8)
-            ] : null,
+            boxShadow: isToday
+                ? [
+                    BoxShadow(
+                      color: AppColors.primaryRed.withOpacity(0.4),
+                      blurRadius: 8,
+                    ),
+                  ]
+                : null,
           ),
         ),
         const SizedBox(height: 8),
-        Text(label, style: TextStyle(color: isToday ? AppColors.primaryRed : AppColors.textSecondary, fontSize: 11, fontWeight: FontWeight.bold)),
+        Text(
+          label,
+          style: TextStyle(
+            color: isToday ? AppColors.primaryRed : AppColors.textSecondary,
+            fontSize: 11,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ],
     );
   }
@@ -232,7 +346,15 @@ class EarningsAnalyticsPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('TOP SERVICES', style: TextStyle(color: AppColors.textSecondary, fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 2)),
+        const Text(
+          'TOP SERVICES',
+          style: TextStyle(
+            color: AppColors.textSecondary,
+            fontSize: 11,
+            fontWeight: FontWeight.w800,
+            letterSpacing: 2,
+          ),
+        ),
         const SizedBox(height: 16),
         Container(
           padding: const EdgeInsets.all(20),
@@ -261,8 +383,22 @@ class EarningsAnalyticsPage extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(name, style: TextStyle(color: textColor, fontSize: 14, fontWeight: FontWeight.w600)),
-            Text('${(percentage * 100).toInt()}%', style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
+            Text(
+              name,
+              style: TextStyle(
+                color: textColor,
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Text(
+              '${(percentage * 100).toInt()}%',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 8),
@@ -271,7 +407,9 @@ class EarningsAnalyticsPage extends StatelessWidget {
           child: LinearProgressIndicator(
             value: percentage,
             backgroundColor: AppColors.borderDark,
-            valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryRed.withOpacity(1 - (1 - percentage) * 0.5)),
+            valueColor: AlwaysStoppedAnimation<Color>(
+              AppColors.primaryRed.withOpacity(1 - (1 - percentage) * 0.5),
+            ),
             minHeight: 6,
           ),
         ),
@@ -286,19 +424,52 @@ class EarningsAnalyticsPage extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('RECENT PAYOUTS', style: TextStyle(color: AppColors.textSecondary, fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 2)),
-            TextButton(onPressed: () {}, child: const Text('SEE ALL', style: TextStyle(color: AppColors.primaryRed, fontSize: 11, fontWeight: FontWeight.w900))),
+            const Text(
+              'RECENT PAYOUTS',
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 11,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 2,
+              ),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: const Text(
+                'SEE ALL',
+                style: TextStyle(
+                  color: AppColors.primaryRed,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 4),
-        _buildPayoutItem('Bank Transfer', 'Oct 20 • Completed', '\$1,120.00', Colors.green),
+        _buildPayoutItem(
+          'Bank Transfer',
+          'Oct 20 • Completed',
+          '\$1,120.00',
+          Colors.green,
+        ),
         const SizedBox(height: 12),
-        _buildPayoutItem('Bank Transfer', 'Oct 22 • Processing', '\$845.50', Colors.orange),
+        _buildPayoutItem(
+          'Bank Transfer',
+          'Oct 22 • Processing',
+          '\$845.50',
+          Colors.orange,
+        ),
       ],
     );
   }
 
-  Widget _buildPayoutItem(String title, String subtitle, String amount, Color statusColor) {
+  Widget _buildPayoutItem(
+    String title,
+    String subtitle,
+    String amount,
+    Color statusColor,
+  ) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -314,19 +485,43 @@ class EarningsAnalyticsPage extends StatelessWidget {
               color: statusColor.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: Icon(Icons.account_balance_wallet, color: statusColor, size: 20),
+            child: Icon(
+              Icons.account_balance_wallet,
+              color: statusColor,
+              size: 20,
+            ),
           ),
           const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
-                Text(subtitle, style: const TextStyle(color: AppColors.textSecondary, fontSize: 11)),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  subtitle,
+                  style: const TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 11,
+                  ),
+                ),
               ],
             ),
           ),
-          Text(amount, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16)),
+          Text(
+            amount,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w900,
+              fontSize: 16,
+            ),
+          ),
         ],
       ),
     );

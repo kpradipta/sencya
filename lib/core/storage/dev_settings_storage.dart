@@ -11,6 +11,7 @@ class DevSettingsStorage {
   static const _keyShowChuckerOnRelease = 'dev_show_chucker_on_release';
   static const _keyLanguage = 'dev_language';
   static const _keyGetCorpsPangkat = 'dev_get_corps_pangkat';
+  static const _keyMockAiFeatures = 'dev_mock_ai_features';
 
   static Future<bool> isEnabled() async {
     final prefs = await SharedPreferences.getInstance();
@@ -52,4 +53,5 @@ class DevSettingsStorage {
   static String get showChuckerOnReleaseKey => _keyShowChuckerOnRelease;
   static String get languageKey => _keyLanguage;
   static String get getCorpsPangkatKey => _keyGetCorpsPangkat;
+  static String get mockAiFeaturesKey => _keyMockAiFeatures;
 }

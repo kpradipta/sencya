@@ -17,7 +17,14 @@ class ProfilePage extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text('PROFILE'),
+            title: const Text(
+              'Profile',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
             backgroundColor: AppColors.background,
             elevation: 0,
           ),
@@ -30,20 +37,28 @@ class ProfilePage extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 60,
                     backgroundColor: AppColors.surface,
-                    child: Icon(Icons.person, size: 60, color: AppColors.elegantGold),
+                    child: Icon(
+                      Icons.person,
+                      size: 60,
+                      color: AppColors.elegantGold,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 24),
                 Center(
                   child: Text(
-                    user?.name ?? 'Distinguished Gentleman',
-                    style: Theme.of(context).textTheme.displayLarge?.copyWith(fontSize: 24),
+                    user?.name ?? 'Gentleman',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.displayLarge?.copyWith(fontSize: 24),
                   ),
                 ),
                 Center(
                   child: Text(
                     user?.email ?? 'gentleman@example.com',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 48),
@@ -71,7 +86,10 @@ class ProfilePage extends StatelessWidget {
                     context.read<AuthBloc>().add(LogoutRequested());
                     context.go('/login');
                   },
-                  child: const Text('LOGOUT', style: TextStyle(color: AppColors.error, letterSpacing: 2)),
+                  child: const Text(
+                    'LOGOUT',
+                    style: TextStyle(color: AppColors.error, letterSpacing: 2),
+                  ),
                 ),
               ],
             ),
@@ -81,13 +99,21 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildOption(BuildContext context, {required IconData icon, required String title, required VoidCallback onTap}) {
+  Widget _buildOption(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+  }) {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       child: ListTile(
         leading: Icon(icon, color: AppColors.elegantGold),
         title: Text(title, style: Theme.of(context).textTheme.labelSmall),
-        trailing: const Icon(Icons.chevron_right, color: AppColors.textSecondary),
+        trailing: const Icon(
+          Icons.chevron_right,
+          color: AppColors.textSecondary,
+        ),
         onTap: onTap,
       ),
     );
