@@ -1,7 +1,7 @@
 class ApiConfig {
-  static const String prodUrl = 'https://barbertech.id/api/v1';
-  static const String devUrl = 'https://dev.barbertech.id/api/v1';
-  static const String demoUrl = 'https://demo.barbertech.id/api/v1';
+  static const String prodUrl = 'http://localhost:3000/api/v1';
+  static const String devUrl = 'http://localhost:3000/api/v1';
+  static const String demoUrl = 'http://localhost:3000/api/v1';
 
-  static const String baseUrl = prodUrl;
+  static const String baseUrl = devUrl;
 }

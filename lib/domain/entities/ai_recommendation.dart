@@ -21,14 +21,14 @@ class AIAnalysis extends Equatable {
 
   @override
   List<Object?> get props => [
-        photoId,
-        requestId,
-        faceShape,
-        faceAnalysisResult,
-        hairAnalysisResult,
-        recommendations,
-        extra,
-      ];
+    photoId,
+    requestId,
+    faceShape,
+    faceAnalysisResult,
+    hairAnalysisResult,
+    recommendations,
+    extra,
+  ];
 }
 
 class StyleRecommendation extends Equatable {
@@ -67,10 +67,7 @@ class AIGenerationRequest extends Equatable {
   final String requestId;
   final String status;
 
-  const AIGenerationRequest({
-    required this.requestId,
-    required this.status,
-  });
+  const AIGenerationRequest({required this.requestId, required this.status});
 
   @override
   List<Object?> get props => [requestId, status];

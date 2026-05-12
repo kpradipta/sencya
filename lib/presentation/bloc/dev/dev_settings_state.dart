@@ -13,6 +13,7 @@ class DevSettingsState extends Equatable {
   final bool showChuckerOnRelease;
   final String language;
   final bool getCorpsPangkat;
+  final bool useMockAi;
 
   final int totalRegisteredPages;
   final int uniquePagesVisited;
@@ -25,11 +26,12 @@ class DevSettingsState extends Equatable {
     this.useChucker = false,
     this.showDebugInfo = false,
     this.showDebugButtons = false,
-    this.apiEnvironment = ApiEnvironment.demo,
+    this.apiEnvironment = ApiEnvironment.dev,
     this.showChuckerNotification = true,
     this.showChuckerOnRelease = true,
     this.language = 'id',
     this.getCorpsPangkat = false,
+    this.useMockAi = false,
     this.totalRegisteredPages = 0,
     this.uniquePagesVisited = 0,
     this.currentRoute = '-',
@@ -47,6 +49,7 @@ class DevSettingsState extends Equatable {
     bool? showChuckerOnRelease,
     String? language,
     bool? getCorpsPangkat,
+    bool? useMockAi,
     int? totalRegisteredPages,
     int? uniquePagesVisited,
     String? currentRoute,
@@ -64,6 +67,7 @@ class DevSettingsState extends Equatable {
       showChuckerOnRelease: showChuckerOnRelease ?? this.showChuckerOnRelease,
       language: language ?? this.language,
       getCorpsPangkat: getCorpsPangkat ?? this.getCorpsPangkat,
+      useMockAi: useMockAi ?? this.useMockAi,
       totalRegisteredPages: totalRegisteredPages ?? this.totalRegisteredPages,
       uniquePagesVisited: uniquePagesVisited ?? this.uniquePagesVisited,
       currentRoute: currentRoute ?? this.currentRoute,
@@ -83,6 +87,7 @@ class DevSettingsState extends Equatable {
     showChuckerOnRelease,
     language,
     getCorpsPangkat,
+    useMockAi,
     totalRegisteredPages,
     uniquePagesVisited,
     currentRoute,

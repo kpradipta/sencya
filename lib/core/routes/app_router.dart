@@ -150,6 +150,7 @@ class AppRouter {
           return AIGenerationPage(
             styleName: extras['styleName'],
             requestId: extras['requestId'],
+            originalImageUrl: extras['originalImageUrl'],
           );
         },
       ),

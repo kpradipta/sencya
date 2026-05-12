@@ -12,7 +12,11 @@ class AIAnalysisModel extends AIAnalysis {
     required super.extra,
   });
 
-  factory AIAnalysisModel.fromJson(Map<String, dynamic> json, {String? photoId, String? requestId}) {
+  factory AIAnalysisModel.fromJson(
+    Map<String, dynamic> json, {
+    String? photoId,
+    String? requestId,
+  }) {
     return AIAnalysisModel(
       photoId: photoId ?? json['photo_id'],
       requestId: requestId ?? json['request_id'],
@@ -88,23 +92,34 @@ class GeneratedPhotoModel extends GeneratedPhoto {
     // Handle relative URLs by prefixing with base URL from config
     String fullUrl = rawUrl;
     if (rawUrl.startsWith('/') && !rawUrl.startsWith('http')) {
-      final baseUrl = ApiConfig.baseUrl.endsWith('/') 
-          ? ApiConfig.baseUrl.substring(0, ApiConfig.baseUrl.length - 1) 
+      final baseUrl = ApiConfig.baseUrl.endsWith('/')
+          ? ApiConfig.baseUrl.substring(0, ApiConfig.baseUrl.length - 1)
           : ApiConfig.baseUrl;
-      
+
       // Ensure /photos is included if missing from the relative path
-      // The user example shows: baseUrl + /photos + rawUrl
       String pathPrefix = '';
       if (!rawUrl.startsWith('/photos/')) {
         pathPrefix = '/photos';
       }
-      
-      fullUrl = '$baseUrl$pathPrefix$rawUrl';
+
+      // Clean up slashes to avoid double slashes (e.g. /photos//abc)
+      String cleanRawUrl = rawUrl.startsWith('/')
+          ? rawUrl.substring(1)
+          : rawUrl;
+      String cleanPathPrefix = pathPrefix.endsWith('/')
+          ? pathPrefix
+          : '$pathPrefix/';
+      if (cleanPathPrefix == '/') cleanPathPrefix = '';
+
+      fullUrl = '$baseUrl/$cleanPathPrefix$cleanRawUrl'
+          .replaceAll('//', '/')
+          .replaceFirst(':/', '://');
     }
 
     // Extract style name from URL if name/style_name is empty
     String? extractedStyle = json['style_name'] ?? json['name'];
-    if ((extractedStyle == null || extractedStyle.isEmpty) && rawUrl.isNotEmpty) {
+    if ((extractedStyle == null || extractedStyle.isEmpty) &&
+        rawUrl.isNotEmpty) {
       final filename = rawUrl.split('/').last;
       final parts = filename.split('_');
       if (parts.length > 2) {
@@ -119,7 +134,9 @@ class GeneratedPhotoModel extends GeneratedPhoto {
       id: json['id'] ?? '',
       url: fullUrl,
       styleName: extractedStyle,
-      createdAt: DateTime.parse(json['created_at'] ?? DateTime.now().toIso8601String()),
+      createdAt: DateTime.parse(
+        json['created_at'] ?? DateTime.now().toIso8601String(),
+      ),
     );
   }
 }

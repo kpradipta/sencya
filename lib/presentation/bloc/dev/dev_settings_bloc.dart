@@ -36,6 +36,7 @@ class DevSettingsBloc extends Bloc<DevSettingsEvent, DevSettingsState> {
     final showChuckerOnRelease = await DevSettingsStorage.getBool(DevSettingsStorage.showChuckerOnReleaseKey, defaultValue: true);
     final language = await DevSettingsStorage.getString(DevSettingsStorage.languageKey, defaultValue: 'id');
     final getCorpsPangkat = await DevSettingsStorage.getBool(DevSettingsStorage.getCorpsPangkatKey);
+    final useMockAi = await DevSettingsStorage.getBool(DevSettingsStorage.mockAiFeaturesKey);
 
     final env = ApiEnvironment.values.firstWhere((e) => e.name == envString, orElse: () => ApiEnvironment.demo);
 
@@ -50,6 +51,7 @@ class DevSettingsBloc extends Bloc<DevSettingsEvent, DevSettingsState> {
       showChuckerOnRelease: showChuckerOnRelease,
       language: language,
       getCorpsPangkat: getCorpsPangkat,
+      useMockAi: useMockAi,
       totalRegisteredPages: RouteTracker.instance.totalRegisteredPages,
       uniquePagesVisited: RouteTracker.instance.uniquePagesVisitedCount,
       currentRoute: RouteTracker.instance.currentRoute,
