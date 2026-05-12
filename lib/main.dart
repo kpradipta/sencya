@@ -1,3 +1,4 @@
+import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:barbershop_app/theme/app_theme.dart';
@@ -10,6 +11,10 @@ import 'package:barbershop_app/presentation/bloc/booking/booking_bloc.dart';
 import 'package:barbershop_app/presentation/bloc/voucher/voucher_bloc.dart';
 import 'package:barbershop_app/presentation/bloc/review/review_bloc.dart';
 import 'package:barbershop_app/presentation/bloc/ai/ai_bloc.dart';
+import 'package:barbershop_app/core/storage/dev_settings_storage.dart';
+import 'package:barbershop_app/presentation/widgets/dev/floating_dev_tools.dart';
+import 'package:barbershop_app/presentation/bloc/dev/dev_settings_bloc.dart';
+import 'package:barbershop_app/presentation/bloc/dev/dev_settings_event.dart';
 
 import 'package:flutter/services.dart';
 
@@ -26,6 +31,13 @@ void main() async {
   ));
 
   await di.init();
+  AppRouter.init();
+
+  // Chucker: only show floating button when developer mode is enabled
+  final devModeEnabled = await DevSettingsStorage.isEnabled();
+  ChuckerFlutter.showOnRelease = devModeEnabled;
+  ChuckerFlutter.showNotification = false;
+
   runApp(const MyApp());
 }
 
@@ -66,12 +78,18 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         BlocProvider(create: (_) => di.sl<VoucherBloc>()),
         BlocProvider(create: (_) => di.sl<ReviewBloc>()),
         BlocProvider(create: (_) => di.sl<AIBloc>()),
+        BlocProvider(
+          create: (_) => di.sl<DevSettingsBloc>()..add(LoadDevSettings()),
+        ),
       ],
       child: MaterialApp.router(
         title: 'Modern Gentleman Barbershop',
         theme: AppTheme.darkTheme,
         routerConfig: AppRouter.router,
         debugShowCheckedModeBanner: false,
+        builder: (context, child) {
+          return FloatingDevTools(child: child!);
+        },
       ),
     );
   }

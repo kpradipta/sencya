@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="barbershop_app"
+        android:label="Sencya"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

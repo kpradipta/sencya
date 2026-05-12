@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,6 +22,8 @@ import '../../presentation/pages/service/active_service_timer_page.dart';
 import '../../presentation/pages/clients/client_directory_page.dart';
 import '../../presentation/pages/main/capster_main_page.dart';
 import '../../presentation/pages/splash/splash_page.dart';
+import '../../presentation/pages/dev/developer_settings_page.dart';
+import '../../core/routes/route_tracker.dart';
 import '../../domain/entities/service.dart';
 import '../../domain/entities/capster.dart';
 
@@ -46,15 +49,22 @@ class GoRouterRefreshStream extends ChangeNotifier {
 }
 
 class AppRouter {
+  static const String devSettingsRoute = 'dev-settings';
+
   static final GoRouter router = GoRouter(
     navigatorKey: _rootNavigatorKey,
+    observers: [
+      ChuckerFlutter.navigatorObserver,
+      RouteTracker.instance,
+    ],
     initialLocation: '/',
     refreshListenable: GoRouterRefreshStream(GetIt.I<AuthBloc>().stream),
     redirect: (context, state) {
       final authState = context.read<AuthBloc>().state;
       final isLoggingIn =
           state.matchedLocation == '/login' ||
-          state.matchedLocation == '/register';
+          state.matchedLocation == '/register' ||
+          state.matchedLocation == '/dev-settings';
       final isSplash = state.matchedLocation == '/';
 
       // While auth is loading or not yet checked, keep on splash
@@ -151,6 +161,15 @@ class AppRouter {
         path: '/my-bookings',
         builder: (context, state) => const MyBookingsPage(),
       ),
+      GoRoute(
+        path: '/dev-settings',
+        name: 'dev-settings',
+        builder: (context, state) => const DeveloperSettingsPage(),
+      ),
     ],
   );
+
+  static void init() {
+    RouteTracker.instance.setTotalRegisteredPages(router.configuration.routes.length);
+  }
 }
