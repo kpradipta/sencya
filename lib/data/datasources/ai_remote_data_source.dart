@@ -249,19 +249,19 @@ class AIRemoteDataSourceImpl implements AIRemoteDataSource {
         {
           "id": "584adfc3-ff68-4586-9959-57b073ea6434",
           "url":
-              "//2e56a7d7-bc79-4707-a574-bf8355357749/original/Screenshot_20260511-191446.jpg",
+              "/2e56a7d7-bc79-4707-a574-bf8355357749/original/Screenshot_20260511-191446.jpg",
           "created_at": "2025-12-17T22:22:01.902122+07:00",
         },
         {
           "id": "584adfc3-ff68-4586-9959-57b073ea6434",
           "url":
-              "//2e56a7d7-bc79-4707-a574-bf8355357749/original/Screenshot_20260511-191446.jpg",
+              "/2e56a7d7-bc79-4707-a574-bf8355357749/original/Screenshot_20260511-191446.jpg",
           "created_at": "2025-12-17T22:22:01.902122+07:00",
         },
         {
           "id": "584adfc3-ff68-4586-9959-57b073ea6434",
           "url":
-              "//2e56a7d7-bc79-4707-a574-bf8355357749/original/Screenshot_20260511-191446.jpg",
+              "/2e56a7d7-bc79-4707-a574-bf8355357749/original/Screenshot_20260511-191446.jpg",
           "created_at": "2025-12-17T22:22:01.902122+07:00",
         },
       ].map((e) => GeneratedPhotoModel.fromJson(e)).toList();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import '../../widgets/common/authenticated_image.dart';
 import '../../../core/di/injection_container.dart';
 import '../../../theme/colors.dart';
 import '../../bloc/capster_home/capster_home_bloc.dart';
@@ -162,19 +163,12 @@ class CapsterHomePage extends StatelessWidget {
         ),
         Stack(
           children: [
-            Container(
+            AuthenticatedImage(
+              imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBoEdViXDrKo30tRXhTqcG-jS6_8DeEOlnzY9jHjABIhGno0vhk4baEJXxKvB22z6wivhhX2cl6QuP8HJA6-p5qL73jCXmK2ildKXnEaI1ZQGMqcJp749EnOlZXAwAxBR5zs0vWiIliPbEH2p_VqBOPirCqKah_NZ41i5KWI5rY1PwQ_DMsWz5tnrQXsGQfKHLaZyxxcLcGUADOyzvljxJt29Jnk1xm0IbezMqfammbfnLN9dgaRHghJ-MlU_9gXdi8_VH0IDBlI8JB',
               width: 52,
               height: 52,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: AppColors.borderDark, width: 2),
-                image: const DecorationImage(
-                  image: NetworkImage(
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuBoEdViXDrKo30tRXhTqcG-jS6_8DeEOlnzY9jHjABIhGno0vhk4baEJXxKvB22z6wivhhX2cl6QuP8HJA6-p5qL73jCXmK2ildKXnEaI1ZQGMqcJp749EnOlZXAwAxBR5zs0vWiIliPbEH2p_VqBOPirCqKah_NZ41i5KWI5rY1PwQ_DMsWz5tnrQXsGQfKHLaZyxxcLcGUADOyzvljxJt29Jnk1xm0IbezMqfammbfnLN9dgaRHghJ-MlU_9gXdi8_VH0IDBlI8JB',
-                  ),
-                  fit: BoxFit.cover,
-                ),
-              ),
+              borderRadius: BorderRadius.circular(26),
+              fit: BoxFit.cover,
             ),
             Positioned(
               bottom: 0,
@@ -534,18 +528,11 @@ class CapsterHomePage extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Container(
+            AuthenticatedImage(
+              imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBMF-Jfxwfm-IpW3YoASDTH9MKD5TTReGNpTsaUK4eMNnCCi08AJ1QR63Lei4yDMwJZnPUla2yu5lmABaLJEXfsEVXGsInaRkC9Iqe7-xmE6Kwaf5FCJ76sY6F7KlN3m_1ycvjjuWdxErutqur1OXXdXpTEl5mBW2UdKycKk2vL06lj0INKIKIdp9Or0yHZUKrkFDduh7vOmFrRQD_38wXqMpigQBqzC1fD3PhNVc-M2Wdo26-iYpMOllGHJi45KBrU7MdeTcBsupyc',
               width: 80,
               height: 80,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                image: const DecorationImage(
-                  image: NetworkImage(
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuBMF-Jfxwfm-IpW3YoASDTH9MKD5TTReGNpTsaUK4eMNnCCi08AJ1QR63Lei4yDMwJZnPUla2yu5lmABaLJEXfsEVXGsInaRkC9Iqe7-xmE6Kwaf5FCJ76sY6F7KlN3m_1ycvjjuWdxErutqur1OXXdXpTEl5mBW2UdKycKk2vL06lj0INKIKIdp9Or0yHZUKrkFDduh7vOmFrRQD_38wXqMpigQBqzC1fD3PhNVc-M2Wdo26-iYpMOllGHJi45KBrU7MdeTcBsupyc',
-                  ),
-                  fit: BoxFit.cover,
-                ),
-              ),
+              borderRadius: BorderRadius.circular(12),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -606,16 +593,11 @@ class CapsterHomePage extends StatelessWidget {
       children: [
         Stack(
           children: [
-            Container(
+            AuthenticatedImage(
+              imageUrl: imageUrl,
               width: 160,
               height: 160,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                image: DecorationImage(
-                  image: NetworkImage(imageUrl),
-                  fit: BoxFit.cover,
-                ),
-              ),
+              borderRadius: BorderRadius.circular(16),
             ),
             Positioned(
               top: 8,

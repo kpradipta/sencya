@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../widgets/common/authenticated_image.dart';
 import '../../../theme/colors.dart';
 import '../../bloc/ai/ai_bloc.dart';
 import '../../bloc/ai/ai_event.dart';
@@ -11,8 +12,14 @@ import '../../bloc/auth/auth_state.dart';
 class AIGenerationPage extends StatefulWidget {
   final String? styleName;
   final String? requestId;
+  final String? originalImageUrl;
 
-  const AIGenerationPage({super.key, this.styleName, this.requestId});
+  const AIGenerationPage({
+    super.key,
+    this.styleName,
+    this.requestId,
+    this.originalImageUrl,
+  });
 
   @override
   State<AIGenerationPage> createState() => _AIGenerationPageState();
@@ -33,11 +40,13 @@ class _AIGenerationPageState extends State<AIGenerationPage> {
     if (authState is Authenticated) {
       userId = authState.user.id;
     }
-    
-    context.read<AIBloc>().add(FetchGeneratedPhotosRequested(
-      userId: userId,
-      requestId: widget.requestId!,
-    ));
+
+    context.read<AIBloc>().add(
+      FetchGeneratedPhotosRequested(
+        userId: userId,
+        requestId: widget.requestId!,
+      ),
+    );
   }
 
   @override
@@ -52,17 +61,22 @@ class _AIGenerationPageState extends State<AIGenerationPage> {
       body: BlocBuilder<AIBloc, AIState>(
         builder: (context, state) {
           if (state is AILoading) {
-            return const Center(
-              child: StylingTipsCarousel(),
-            );
+            return const Center(child: StylingTipsCarousel());
           } else if (state is AIError) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.error_outline, color: AppColors.error, size: 64),
+                  const Icon(
+                    Icons.error_outline,
+                    color: AppColors.error,
+                    size: 64,
+                  ),
                   const SizedBox(height: 16),
-                  Text(state.message, style: const TextStyle(color: Colors.white)),
+                  Text(
+                    state.message,
+                    style: const TextStyle(color: Colors.white),
+                  ),
                   const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: _fetchPhotos,
@@ -77,9 +91,16 @@ class _AIGenerationPageState extends State<AIGenerationPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.hourglass_empty, color: AppColors.primaryRed, size: 64),
+                    const Icon(
+                      Icons.hourglass_empty,
+                      color: AppColors.primaryRed,
+                      size: 64,
+                    ),
                     const SizedBox(height: 16),
-                    const Text('STILL PROCESSING...', style: TextStyle(color: Colors.white)),
+                    const Text(
+                      'STILL PROCESSING...',
+                      style: TextStyle(color: Colors.white),
+                    ),
                     const SizedBox(height: 24),
                     ElevatedButton(
                       onPressed: _fetchPhotos,
@@ -89,46 +110,93 @@ class _AIGenerationPageState extends State<AIGenerationPage> {
                 ),
               );
             }
-            return GridView.builder(
+            return ListView.builder(
               padding: const EdgeInsets.all(24),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: 0.7,
-              ),
               itemCount: state.photos.length,
               itemBuilder: (context, index) {
                 final photo = state.photos[index];
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          image: DecorationImage(
-                            image: NetworkImage(photo.url),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
                     Text(
                       photo.styleName?.toUpperCase() ?? 'OPTION ${index + 1}',
-                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: AppColors.elegantGold,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        letterSpacing: 1,
+                      ),
                     ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Original',
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              AspectRatio(
+                                aspectRatio: 1,
+                                child: AuthenticatedImage(
+                                  imageUrl: widget.originalImageUrl ?? '',
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => GoRouter.of(
+                              context,
+                            ).push('/active-service-timer'),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Generated',
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                AspectRatio(
+                                  aspectRatio: 1,
+                                  child: AuthenticatedImage(
+                                    imageUrl: photo.url,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 32),
                   ],
                 );
               },
             );
           }
 
-          return const Center(child: Text('READY TO GENERATE', style: TextStyle(color: Colors.white70)));
+          return const Center(
+            child: Text(
+              'READY TO GENERATE',
+              style: TextStyle(color: Colors.white70),
+            ),
+          );
         },
       ),
       bottomNavigationBar: SafeArea(
@@ -167,7 +235,10 @@ class _StylingTipsCarouselState extends State<StylingTipsCarousel> {
   @override
   void initState() {
     super.initState();
-    _timer = Stream.periodic(const Duration(seconds: 4), (i) => (i + 1) % _tips.length);
+    _timer = Stream.periodic(
+      const Duration(seconds: 4),
+      (i) => (i + 1) % _tips.length,
+    );
   }
 
   @override
@@ -184,7 +255,10 @@ class _StylingTipsCarouselState extends State<StylingTipsCarousel> {
             const SizedBox(height: 48),
             Text(
               'OUR AI IS CRAFTING YOUR LOOK...',
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(letterSpacing: 2, color: AppColors.elegantGold),
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                letterSpacing: 2,
+                color: AppColors.elegantGold,
+              ),
             ),
             const SizedBox(height: 24),
             AnimatedSwitcher(
@@ -194,7 +268,11 @@ class _StylingTipsCarouselState extends State<StylingTipsCarousel> {
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: Column(
                   children: [
-                    const Icon(Icons.tips_and_updates_outlined, color: AppColors.elegantGold, size: 32),
+                    const Icon(
+                      Icons.tips_and_updates_outlined,
+                      color: AppColors.elegantGold,
+                      size: 32,
+                    ),
                     const SizedBox(height: 16),
                     Text(
                       _tips[_currentIndex],
