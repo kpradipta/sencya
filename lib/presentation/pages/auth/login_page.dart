@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:chucker_flutter/chucker_flutter.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import '../../../core/storage/dev_settings_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../bloc/auth/auth_bloc.dart';
@@ -17,6 +20,47 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
+  int _tapCount = 0;
+  String _versionString = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVersionInfo();
+  }
+
+  Future<void> _loadVersionInfo() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      _versionString = 'v${packageInfo.version}+${packageInfo.buildNumber}';
+    });
+  }
+
+  void _handleBuildNumberTap() async {
+    _tapCount++;
+    if (_tapCount >= 3 && _tapCount < 7) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('You are ${7 - _tapCount} steps away from being a developer'),
+          duration: const Duration(seconds: 1),
+        ),
+      );
+    } else if (_tapCount >= 7) {
+      await DevSettingsStorage.setEnabled(true);
+      ChuckerFlutter.showOnRelease = true;
+      _tapCount = 0;
+      
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Developer mode enabled!'),
+        ),
+      );
+      
+      // Navigate to Developer Settings page instead of showing Chucker directly
+      context.push('/dev-settings');
+    }
+  }
 
   void _onLogin() {
     context.read<AuthBloc>().add(
@@ -185,6 +229,20 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ],
+                      ),
+                    ),
+                  ),
+                   const SizedBox(height: 32),
+                  Center(
+                    child: GestureDetector(
+                      onTap: _handleBuildNumberTap,
+                      child: Text(
+                        _versionString,
+                        style: const TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),

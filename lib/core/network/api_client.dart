@@ -1,5 +1,7 @@
+import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:dio/dio.dart';
 import '../storage/secret_storage.dart';
+import '../storage/dev_settings_storage.dart';
 import 'api_config.dart';
 
 class ApiClient {
@@ -7,7 +9,12 @@ class ApiClient {
   final SecretStorage _secretStorage;
 
   ApiClient(this._dio, this._secretStorage) {
-    _dio.options.baseUrl = ApiConfig.baseUrl;
+    _init();
+  }
+
+  Future<void> _init() async {
+    final env = await DevSettingsStorage.getString(DevSettingsStorage.apiEnvironmentKey, defaultValue: 'prod');
+    _dio.options.baseUrl = _getBaseUrl(env);
     _dio.options.connectTimeout = const Duration(seconds: 15);
     _dio.options.receiveTimeout = const Duration(seconds: 15);
     
@@ -60,7 +67,28 @@ class ApiClient {
         },
       ),
     );
+
+    // Chucker: captures all HTTP traffic for in-app inspection
+    _dio.interceptors.add(ChuckerDioInterceptor());
   }
 
   Dio get dio => _dio;
+
+  String _getBaseUrl(String env) {
+    switch (env) {
+      case 'prod':
+        return ApiConfig.prodUrl;
+      case 'dev':
+        return ApiConfig.devUrl;
+      case 'demo':
+        return ApiConfig.demoUrl;
+      default:
+        return ApiConfig.prodUrl;
+    }
+  }
+
+  Future<void> refreshBaseUrl() async {
+    final env = await DevSettingsStorage.getString(DevSettingsStorage.apiEnvironmentKey, defaultValue: 'prod');
+    _dio.options.baseUrl = _getBaseUrl(env);
+  }
 }

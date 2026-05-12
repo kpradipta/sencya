@@ -1,4 +1,4 @@
-package com.example.barbershop_app
+package com.kpradipta.sencya
 
 import io.flutter.embedding.android.FlutterActivity
 

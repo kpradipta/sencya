@@ -17,7 +17,7 @@ class AppTheme {
         error: AppColors.error,
       ),
       textTheme: AppTypography.textTheme,
-      
+
       // Card Theme
       cardTheme: CardThemeData(
         color: AppColors.surface,
@@ -27,7 +27,7 @@ class AppTheme {
           side: const BorderSide(color: AppColors.borderDark, width: 1),
         ),
       ),
-      
+
       // Button Themes
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -58,7 +58,7 @@ class AppTheme {
           ),
         ),
       ),
-      
+
       // Input Theme
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
@@ -78,14 +78,14 @@ class AppTheme {
         labelStyle: AppTypography.textTheme.bodyMedium?.copyWith(
           color: AppColors.textSecondary,
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 18,
+        ),
       ),
-      
+
       // Icon Theme
-      iconTheme: const IconThemeData(
-        color: AppColors.crispWhite,
-        size: 24,
-      ),
+      iconTheme: const IconThemeData(color: AppColors.crispWhite, size: 24),
     );
   }
 }
