@@ -35,7 +35,9 @@ class _CapsterMainPageState extends State<CapsterMainPage> {
       backgroundColor: AppColors.background,
       body: IndexedStack(index: _selectedIndex, children: _pages),
       bottomNavigationBar: Container(
-        padding: EdgeInsets.only(top: 0),
+        padding: EdgeInsets.only(
+          top: 0,
+        ),
         decoration: BoxDecoration(
           color: AppColors.background.withOpacity(0.95),
           border: const Border(

@@ -13,9 +13,9 @@ class DevSettingsBloc extends Bloc<DevSettingsEvent, DevSettingsState> {
   DevSettingsBloc({
     required SecretStorage secretStorage,
     required ApiClient apiClient,
-  })  : _secretStorage = secretStorage,
-        _apiClient = apiClient,
-        super(const DevSettingsState()) {
+  }) : _secretStorage = secretStorage,
+       _apiClient = apiClient,
+       super(const DevSettingsState()) {
     on<LoadDevSettings>(_onLoadDevSettings);
     on<UpdateSetting>(_onUpdateSetting);
     on<RefreshCounters>(_onRefreshCounters);
@@ -25,40 +25,71 @@ class DevSettingsBloc extends Bloc<DevSettingsEvent, DevSettingsState> {
   }
 
   Future<void> _onLoadDevSettings(
-      LoadDevSettings event, Emitter<DevSettingsState> emit) async {
+    LoadDevSettings event,
+    Emitter<DevSettingsState> emit,
+  ) async {
     final isEnabled = await DevSettingsStorage.isEnabled();
-    final showFloatingDevTools = await DevSettingsStorage.getBool(DevSettingsStorage.floatingDevToolsKey);
-    final useChucker = await DevSettingsStorage.getBool(DevSettingsStorage.useChuckerKey, defaultValue: true);
-    final showDebugInfo = await DevSettingsStorage.getBool(DevSettingsStorage.showDebugInfoKey);
-    final showDebugButtons = await DevSettingsStorage.getBool(DevSettingsStorage.showDebugButtonsKey);
-    final envString = await DevSettingsStorage.getString(DevSettingsStorage.apiEnvironmentKey, defaultValue: 'demo');
-    final showChuckerNotification = await DevSettingsStorage.getBool(DevSettingsStorage.showChuckerNotificationKey, defaultValue: true);
-    final showChuckerOnRelease = await DevSettingsStorage.getBool(DevSettingsStorage.showChuckerOnReleaseKey, defaultValue: true);
-    final language = await DevSettingsStorage.getString(DevSettingsStorage.languageKey, defaultValue: 'id');
-    final getCorpsPangkat = await DevSettingsStorage.getBool(DevSettingsStorage.getCorpsPangkatKey);
-    final useMockAi = await DevSettingsStorage.getBool(DevSettingsStorage.mockAiFeaturesKey);
+    final showFloatingDevTools = await DevSettingsStorage.getBool(
+      DevSettingsStorage.floatingDevToolsKey,
+    );
+    final useChucker = await DevSettingsStorage.getBool(
+      DevSettingsStorage.useChuckerKey,
+      defaultValue: true,
+    );
+    final showDebugInfo = await DevSettingsStorage.getBool(
+      DevSettingsStorage.showDebugInfoKey,
+    );
+    final showDebugButtons = await DevSettingsStorage.getBool(
+      DevSettingsStorage.showDebugButtonsKey,
+    );
+    final envString = await DevSettingsStorage.getString(
+      DevSettingsStorage.apiEnvironmentKey,
+      defaultValue: 'demo',
+    );
+    final showChuckerNotification = await DevSettingsStorage.getBool(
+      DevSettingsStorage.showChuckerNotificationKey,
+      defaultValue: true,
+    );
+    final showChuckerOnRelease = await DevSettingsStorage.getBool(
+      DevSettingsStorage.showChuckerOnReleaseKey,
+      defaultValue: true,
+    );
+    final language = await DevSettingsStorage.getString(
+      DevSettingsStorage.languageKey,
+      defaultValue: 'id',
+    );
+    final useMockAi = await DevSettingsStorage.getBool(
+      DevSettingsStorage.mockAiFeaturesKey,
+    );
 
-    final env = ApiEnvironment.values.firstWhere((e) => e.name == envString, orElse: () => ApiEnvironment.demo);
+    final env = ApiEnvironment.values.firstWhere(
+      (e) => e.name == envString,
+      orElse: () => ApiEnvironment.demo,
+    );
 
-    emit(state.copyWith(
-      isDevModeEnabled: isEnabled,
-      showFloatingDevTools: showFloatingDevTools,
-      useChucker: useChucker,
-      showDebugInfo: showDebugInfo,
-      showDebugButtons: showDebugButtons,
-      apiEnvironment: env,
-      showChuckerNotification: showChuckerNotification,
-      showChuckerOnRelease: showChuckerOnRelease,
-      language: language,
-      getCorpsPangkat: getCorpsPangkat,
-      useMockAi: useMockAi,
-      totalRegisteredPages: RouteTracker.instance.totalRegisteredPages,
-      uniquePagesVisited: RouteTracker.instance.uniquePagesVisitedCount,
-      currentRoute: RouteTracker.instance.currentRoute,
-    ));
+    emit(
+      state.copyWith(
+        isDevModeEnabled: isEnabled,
+        showFloatingDevTools: showFloatingDevTools,
+        useChucker: useChucker,
+        showDebugInfo: showDebugInfo,
+        showDebugButtons: showDebugButtons,
+        apiEnvironment: env,
+        showChuckerNotification: showChuckerNotification,
+        showChuckerOnRelease: showChuckerOnRelease,
+        language: language,
+        useMockAi: useMockAi,
+        totalRegisteredPages: RouteTracker.instance.totalRegisteredPages,
+        uniquePagesVisited: RouteTracker.instance.uniquePagesVisitedCount,
+        currentRoute: RouteTracker.instance.currentRoute,
+      ),
+    );
   }
 
-  Future<void> _onUpdateSetting(UpdateSetting event, Emitter<DevSettingsState> emit) async {
+  Future<void> _onUpdateSetting(
+    UpdateSetting event,
+    Emitter<DevSettingsState> emit,
+  ) async {
     if (event.value is bool) {
       await DevSettingsStorage.setBool(event.key, event.value);
     } else if (event.value is String) {
@@ -78,27 +109,45 @@ class DevSettingsBloc extends Bloc<DevSettingsEvent, DevSettingsState> {
     add(LoadDevSettings());
   }
 
-  Future<void> _onRefreshCounters(RefreshCounters event, Emitter<DevSettingsState> emit) async {
+  Future<void> _onRefreshCounters(
+    RefreshCounters event,
+    Emitter<DevSettingsState> emit,
+  ) async {
     RouteTracker.instance.resetCounters();
-    emit(state.copyWith(
-      uniquePagesVisited: RouteTracker.instance.uniquePagesVisitedCount,
-      currentRoute: RouteTracker.instance.currentRoute,
-    ));
+    emit(
+      state.copyWith(
+        uniquePagesVisited: RouteTracker.instance.uniquePagesVisitedCount,
+        currentRoute: RouteTracker.instance.currentRoute,
+      ),
+    );
   }
 
-  Future<void> _onFlushStorage(FlushStorage event, Emitter<DevSettingsState> emit) async {
+  Future<void> _onFlushStorage(
+    FlushStorage event,
+    Emitter<DevSettingsState> emit,
+  ) async {
     await _secretStorage.clearTokens();
-    // In a real app, you might also want to clear shared preferences, 
+    // In a real app, you might also want to clear shared preferences,
     // but maybe not the dev settings themselves?
     // Let's just clear tokens for now as it's the safest way to "logout".
   }
 
-  Future<void> _onRefreshFcmToken(RefreshFcmToken event, Emitter<DevSettingsState> emit) async {
+  Future<void> _onRefreshFcmToken(
+    RefreshFcmToken event,
+    Emitter<DevSettingsState> emit,
+  ) async {
     // Implement FCM token refresh logic here
-    emit(state.copyWith(fcmToken: 'TOKEN_${DateTime.now().millisecondsSinceEpoch}'));
+    emit(
+      state.copyWith(
+        fcmToken: 'TOKEN_${DateTime.now().millisecondsSinceEpoch}',
+      ),
+    );
   }
 
-  Future<void> _onTestApiCall(TestApiCall event, Emitter<DevSettingsState> emit) async {
+  Future<void> _onTestApiCall(
+    TestApiCall event,
+    Emitter<DevSettingsState> emit,
+  ) async {
     // Implement test API call logic here
   }
 }
