@@ -19,8 +19,8 @@ class _AIUploadPageState extends State<AIUploadPage> {
   File? _image;
   final _picker = ImagePicker();
 
-  Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
@@ -75,40 +75,76 @@ class _AIUploadPageState extends State<AIUploadPage> {
               ),
               const SizedBox(height: 48),
               Expanded(
-                child: GestureDetector(
-                  onTap: _pickImage,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      borderRadius: BorderRadius.circular(24),
-                      border: Border.all(
-                        color: AppColors.borderStroke,
-                        style: BorderStyle.solid,
-                      ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(
+                      color: AppColors.borderStroke,
+                      style: BorderStyle.solid,
                     ),
-                    child: _image == null
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.add_a_photo_outlined,
-                                size: 64,
-                                color: AppColors.elegantGold.withOpacity(0.5),
-                              ),
-                              const SizedBox(height: 16),
-                              const Text(
-                                'Tap to select photo',
-                                style: TextStyle(
-                                  color: AppColors.textSecondary,
+                  ),
+                  child: _image == null
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.camera_alt_outlined,
+                              size: 80,
+                              color: AppColors.primaryRed.withOpacity(0.8),
+                            ),
+                            const SizedBox(height: 24),
+                            ElevatedButton.icon(
+                              onPressed: () => _pickImage(ImageSource.camera),
+                              icon: const Icon(Icons.camera_alt),
+                              label: const Text('TAKE PHOTO'),
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 32,
+                                  vertical: 16,
                                 ),
                               ),
-                            ],
-                          )
-                        : ClipRRect(
-                            borderRadius: BorderRadius.circular(24),
-                            child: Image.file(_image!, fit: BoxFit.cover),
-                          ),
-                  ),
+                            ),
+                            const SizedBox(height: 16),
+                            TextButton.icon(
+                              onPressed: () => _pickImage(ImageSource.gallery),
+                              icon: const Icon(Icons.photo_library_outlined),
+                              label: const Text('CHOOSE FROM GALLERY'),
+                              style: TextButton.styleFrom(
+                                foregroundColor: AppColors.textSecondary,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Stack(
+                          children: [
+                            Positioned.fill(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(24),
+                                child: Image.file(_image!, fit: BoxFit.cover),
+                              ),
+                            ),
+                            Positioned(
+                              top: 20,
+                              right: 20,
+                              child: GestureDetector(
+                                onTap: () => setState(() => _image = null),
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.black54,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.close,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                 ),
               ),
               const SizedBox(height: 48),
@@ -117,7 +153,7 @@ class _AIUploadPageState extends State<AIUploadPage> {
                   if (state is AILoading) {
                     return const Center(
                       child: CircularProgressIndicator(
-                        color: AppColors.elegantGold,
+                        color: AppColors.primaryRed,
                       ),
                     );
                   }
